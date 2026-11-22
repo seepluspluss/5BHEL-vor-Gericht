@@ -1,0 +1,19 @@
+NEU: 3 Zugänge für 5BHEL vor Gericht
+
+1. ADMIN: /login.html – nur mit ADMIN_PASSWORD. Spiel steuern, Raum eröffnen, QR anzeigen.
+2. SCHÜLER: /abstimmen.html?code=XXXXXX – Name und Raumcode, nur abstimmen.
+3. FRAU PROF: privater Link /beobachten.html?token=... – Live-Übersicht, nur lesen.
+
+Ablauf:
+- Als Admin einloggen und Raum erstellen.
+- Im Live-Abstimmungsfeld auf „Beobachter-Zugang erzeugen“ klicken.
+- „Link kopieren“ klicken und nur der Lehrkraft schicken.
+- Über „Zugang widerrufen“ kann der Admin den Link jederzeit ungültig machen.
+- Ein neuer Beobachter-Link macht den bisherigen ungültig.
+- Der Link läuft nach 4 Stunden ab.
+
+Sicherheit: Der Beobachter-Link ist ein geheimer Zugangsschlüssel. Wer den Link besitzt,
+kann die Übersicht sehen. Der Link gibt keine Adminrechte. Die Daten sind nur im RAM
+und werden bei Serverneustart gelöscht. Admin-Passwort nur bei Render Environment setzen.
+
+Update: Dateien im bestehenden GitHub-Unterordner ersetzen und Render-Deployment abwarten.

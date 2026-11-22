@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Frau Prof · Live-Übersicht · 5BHEL</title>
+<link rel="stylesheet" href="css/live.css">
+</head>
+<body class="observer">
+<main>
+  <div class="brand">
+    <div>
+      <div class="brand-title">5BHEL <span>VOR GERICHT · LEHRKRAFT</span></div>
+      <div class="muted" style="font-size:13px">Nur beobachten – keine Steuerung möglich</div>
+    </div>
+    <span id="conn" class="pill">● Verbinde …</span>
+  </div>
+
+  <div class="grid">
+    <div class="metric"><div class="v" id="m-case">–</div><div class="l">Aktueller Fall</div></div>
+    <div class="metric"><div class="v" id="m-people">0</div><div class="l">Teilnehmende verbunden</div></div>
+    <div class="metric"><div class="v" id="m-votes">0</div><div class="l">Abgegebene Stimmen</div></div>
+    <div class="metric"><div class="v" id="m-score">0</div><div class="l">Punkte der Klasse (von 1.200)</div></div>
+  </div>
+
+  <section class="card">
+    <div class="kicker" id="q-kicker">Aktuelle Frage</div>
+    <h2 id="q-topic">Warte auf die erste Frage …</h2>
+    <div class="q-ask" id="q-ask"></div>
+    <ol class="answers-list" id="q-answers"></ol>
+  </section>
+
+  <section class="card">
+    <div class="kicker">Abstimmung</div>
+    <h2 id="v-status">Momentan keine offene Abstimmung.</h2>
+    <div class="timer hidden" id="v-timer"><div class="timer-bar"><span id="v-timer-bar"></span></div><div class="timer-sec" id="v-sec"></div></div>
+    <div class="bars" id="v-bars"></div>
+    <div class="verdict hidden" id="v-verdict"></div>
+  </section>
+
+  <section class="card">
+    <div class="kicker">Fortschritt</div>
+    <div class="dots" id="dots"></div>
+    <p class="muted" id="progress" style="margin:10px 0 0"></p>
+  </section>
+  <p class="muted" style="font-size:13px;margin-top:18px">Dieser Zugang ist privat, zeitlich begrenzt und kann von der Spielleitung jederzeit widerrufen werden. Bitte nicht weitergeben.</p>
+</main>
+<script>
+(function () {
+  'use strict';
+  var L = ['A', 'B', 'C'], $ = function (id) { return document.getElementById(id); };
+  var token = new URLSearchParams(location.search).get('token') || '';
+  var last = null, deadline = 0;
+  function reason(r) { return r === 'timer' ? 'Zeit abgelaufen' : r === 'all' ? 'alle haben abgestimmt' : 'durch die Spielleitung beendet'; }
+  function refresh() {
+    if (!token) { $('conn').textContent = 'Kein Zugangsschlüssel'; $('conn').className = 'pill bad'; return; }
+    fetch('/api/observer-state?token=' + encodeURIComponent(token), { cache: 'no-store' })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw Error(j.error || 'Zugang verweigert'); return j.room; }); })
+      .then(render)
+      .catch(function (e) {
+        $('conn').textContent = '● ' + e.message; $('conn').className = 'pill bad';
+        $('v-status').textContent = 'Kein Zugriff. Bitte bei der Spielleitung einen neuen Link anfordern.';
+      });
+  }
+  function render(s) {
+    last = s;
+    var v = s.vote, sc = s.scene || {}, t = s.caseTitles || [];
+    $('conn').textContent = s.closed ? '● Verhandlung beendet' : v && v.phase === 'voting' ? '● Abstimmung läuft' : '● verbunden';
+    $('conn').className = 'pill ok';
+    var c = v ? v.c : sc.c;
+    $('m-case').textContent = c != null ? 'Fall ' + (c + 1) : '–';
+    $('m-people').textContent = s.participants + (s.joined !== s.participants ? ' / ' + s.joined : '');
+    $('m-votes').textContent = v ? v.voted + (v.phase === 'voting' && v.required != null ? ' / ' + v.required : '') : 0;
+    $('m-score').textContent = s.score;
+    if (s.question) {
+      $('q-kicker').textContent = 'Fall ' + (s.question.c + 1) + ' · ' + s.question.caseTitle + ' · Frage ' + (s.question.q + 1);
+      $('q-topic').textContent = s.question.topic;
+      $('q-ask').textContent = s.question.ask;
+      var ol = $('q-answers'); ol.replaceChildren();
+      s.question.answers.forEach(function (a, i) { var li = document.createElement('li'); var b = document.createElement('b'); b.textContent = L[i]; li.append(b, document.createTextNode(a)); ol.append(li); });
+    } else {
+      $('q-kicker').textContent = sc.c != null ? 'Fall ' + (sc.c + 1) + ' · ' + (t[sc.c] || '') : 'Aktuelle Frage';
+      $('q-topic').textContent = sc.name === 'final' ? 'Urteilsverkündung' : 'Warte auf die erste Frage …';
+    }
+    var bars = $('v-bars'); bars.replaceChildren();
+    $('v-timer').classList.toggle('hidden', !(v && v.phase === 'voting'));
+    var vd = $('v-verdict'); vd.className = 'verdict hidden';
+    if (!v) { $('v-status').textContent = 'Momentan keine offene Abstimmung.'; }
+    else {
+      deadline = Date.now() + v.remainingMs;
+      $('v-status').textContent = v.phase === 'voting' ? (v.round > 1 ? 'Stichwahl läuft' : 'Die Klasse stimmt gerade ab') : 'Abstimmung beendet – ' + reason(v.closeReason);
+      var d = s.decision;
+      (v.counts || [0, 0, 0]).forEach(function (n, i) {
+        if (v.options.indexOf(i) < 0) return;
+        var row = document.createElement('div');
+        var win = v.phase !== 'voting' && (d ? d.chosen === i : v.winner === i);
+        row.className = 'bar-row' + (win ? ' win' : '');
+        row.innerHTML = '<b></b><div class="bar-track"><div class="bar-fill" style="transition:none"></div></div><span class="bar-num"></span>';
+        row.querySelector('b').textContent = L[i];
+        row.querySelector('.bar-fill').style.width = (v.percents ? v.percents[i] : 0) + '%';
+        row.querySelector('.bar-num').textContent = n + ' · ' + (v.percents ? v.percents[i] : 0) + ' %';
+        bars.append(row);
+      });
+      if (v.phase !== 'voting') {
+        vd.className = 'verdict';
+        if (d && d.method === 'skipped') vd.textContent = 'Frage übersprungen (0 Punkte)';
+        else if (d) vd.textContent = (d.method === 'admin' ? 'Entscheidung der Spielleitung (Gleichstand): ' : 'Mehrheitsentscheidung: ') + L[d.chosen] + (d.revealed ? (d.ok ? ' · richtig' : ' · falsch, richtig ist ' + L[d.correct]) : '');
+        else if (v.outcome === 'tie') { vd.textContent = 'Gleichstand ' + v.tied.map(function (i) { return L[i]; }).join(' / ') + ' – Spielleitung entscheidet'; vd.classList.add('tie'); }
+        else { vd.textContent = 'Keine Stimmen abgegeben'; vd.classList.add('tie'); }
+      }
+    }
+    var dots = $('dots'); dots.replaceChildren();
+    s.results.forEach(function (r, g) {
+      if (g && g % 4 === 0) { var gap = document.createElement('span'); gap.className = 'gap'; dots.append(gap); }
+      var sp = document.createElement('span');
+      if (r) sp.className = r.method === 'skipped' ? 'skip' : r.ok === null ? 'pending' : r.ok ? 'ok' : 'bad';
+      dots.append(sp);
+    });
+    $('progress').textContent = s.decided + ' von 12 Entscheidungen getroffen · ' + s.score + ' Punkte freigegeben';
+  }
+  setInterval(function () {
+    if (!last || !last.vote || last.vote.phase !== 'voting') return;
+    var left = Math.max(0, deadline - Date.now());
+    $('v-sec').textContent = Math.ceil(left / 1000) + ' s';
+    $('v-timer-bar').style.width = (100 * left / (last.vote.duration * 1000)) + '%';
+  }, 250);
+  refresh(); setInterval(refresh, 1000);
+})();
+</script>
+</body>
+</html>

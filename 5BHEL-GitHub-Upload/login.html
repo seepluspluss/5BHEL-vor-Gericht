@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5BHEL vor Gericht · Spielleitung</title>
+<link rel="stylesheet" href="css/live.css">
+</head>
+<body>
+<main style="max-width:440px;padding-top:8vh">
+  <div class="card">
+    <div class="kicker">5BHEL vor Gericht</div>
+    <h1>Anmeldung Spielleitung</h1>
+    <p class="muted">Nur die Spielleitung steuert die Verhandlung. Schüler stimmen über den QR-Code ab.</p>
+    <form id="form">
+      <label for="password">Moderator-Passwort</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <button class="btn">Verhandlung leiten</button>
+    </form>
+    <p id="error" class="error" role="alert"></p>
+  </div>
+  <p style="text-align:center;margin-top:18px"><a style="color:#e2bb6c" href="/abstimmen.html">Als Schüler teilnehmen</a></p>
+</main>
+<script>
+fetch('/api/admin-status').then(function (r) { return r.json(); }).then(function (x) { if (x.admin) location.replace('/'); }).catch(function () {});
+document.getElementById('form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  fetch('/api/admin-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: document.getElementById('password').value }) })
+    .then(function (r) { if (r.ok) location.replace('/'); else document.getElementById('error').textContent = 'Passwort falsch.'; })
+    .catch(function () { document.getElementById('error').textContent = 'Server nicht erreichbar.'; });
+});
+</script>
+</body>
+</html>

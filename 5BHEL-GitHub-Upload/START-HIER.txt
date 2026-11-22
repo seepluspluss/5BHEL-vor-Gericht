@@ -1,0 +1,23 @@
+5BHEL VOR GERICHT – STARTANLEITUNG
+=================================
+
+SOFORT SPIELEN (Windows / macOS / Linux):
+1. index.html per Doppelklick in einem Browser öffnen.
+2. Für die Präsentation F11 drücken (Vollbild).
+3. Auf „Verhandlung eröffnen“ klicken.
+
+WINDOWS-EXE ERSTELLEN:
+1. Unter Windows tools\build-exe.cmd doppelklicken.
+2. Die EXE wird im Projekt-Hauptordner erstellt.
+3. 5BHEL-vor-Gericht.exe starten.
+
+Voraussetzung: Der Windows-.NET-Framework-C#-Compiler csc.exe muss vorhanden sein.
+Die EXE öffnet das Spiel in Microsoft Edge im App-Modus; ohne Edge wird
+der Standardbrowser verwendet. Sie ist kein vollständig eigenständiger Browser.
+
+HINWEIS ZUR PRÜFUNG:
+Die beigefügten Autotest-Berichte stammen aus dem ursprünglichen Projekt.
+Der EXE-Bau wurde in dieser Linux-Umgebung nicht ausgeführt.
+
+ÄNDERUNG:
+Der Build funktioniert jetzt auch ohne optionale icon.ico-Datei.
