@@ -142,7 +142,7 @@ window.__runAutotest = async function (G) {
 
   // ---------- 4. Moderator ----------
   document.dispatchEvent(new KeyboardEvent('keydown', { key: 'm' })); await sleep(0);
-  ok(stage.classList.contains('mod-open'), 'Taste M öffnet Moderator');
+  ok(document.body.classList.contains('admin-open'), 'Taste M öffnet Moderator');
   layout('moderator');
   await click('#mod-timer');
   ok(!visible(document.getElementById('btn-timer')), 'Timer deaktivierbar');
@@ -160,7 +160,7 @@ window.__runAutotest = async function (G) {
   await click('#mod-reset');
   ok(S().scene === 'final', 'Zurücksetzen braucht Bestätigung');
   await click('#mod-reset');
-  ok(S().scene === 'title' && S().score === 0 && !stage.classList.contains('mod-open'), 'Zurücksetzen funktioniert');
+  ok(S().scene === 'title' && S().score === 0 && !document.body.classList.contains('admin-open'), 'Zurücksetzen funktioniert');
 
   // Dialog überspringbar (Schreibmaschine)
   ok(document.getElementById('say-text').textContent.length >= 0, 'Dialog vorhanden');

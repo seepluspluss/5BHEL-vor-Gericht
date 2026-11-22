@@ -1,0 +1,149 @@
+/* 5BHEL VOR GERICHT – Cinematic Theme: Marineblau, Mahagoni, Gold, Cremeweiß.
+ * Überschreibt Farben aus style.css; enthält Richterin-Zustände und Filmsequenzen. */
+:root {
+  --gold: #e2bb6c; --gold-soft: #b8904a; --cream: #f6eedd; --ink: #16203a; --paper: #f5eddb;
+  --panel: rgba(9, 16, 31, .95); --navy: #0d1626; --navy2: #162642;
+}
+html, body { background: #04070d; }
+#stage { background: #0a1220; }
+
+/* ---------- HUD, Dialog, Karten ---------- */
+#hud { background: linear-gradient(rgba(4,8,16,.97), rgba(4,8,16,.82)); border-bottom: 1px solid rgba(226,187,108,.38); }
+#dialog { background: linear-gradient(180deg, rgba(14,24,44,.96), rgba(8,14,28,.96)); border: 2px solid var(--gold-soft); border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.06), inset 0 0 0 1px rgba(226,187,108,.12); }
+#dialog-speaker { background: linear-gradient(#f0d08a, #b8893c); color: #1a1206; box-shadow: 0 4px 14px rgba(0,0,0,.45); }
+#dialog-speaker.fade-in, #dialog.speaker-in #dialog-speaker { animation: spk-in .35s ease-out; }
+@keyframes spk-in { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+#say-text { font-size: 38px; color: #fbf4e4; }
+#say-sub { color: #f3d58e; }
+.card { background: linear-gradient(#f8f1e1, #efe3c9); border-color: #cfa863; }
+.card-kicker { color: #8a5f1e; }
+.answer { background: linear-gradient(#faf4e6, #ecdfc2); border-color: #b8904a; color: #16203a; font-size: 31px; }
+.answer:hover { border-color: #f0cd82; }
+.answer-letter { background: #13203a; color: #f0cd82; box-shadow: inset 0 0 0 2px rgba(240,205,130,.4); }
+#stage.mode-question #lower-answers .answer { animation: ans-in .45s ease-out both; }
+#stage.mode-question #lower-answers .answer:nth-child(2) { animation-delay: .08s; }
+#stage.mode-question #lower-answers .answer:nth-child(3) { animation-delay: .16s; }
+@keyframes ans-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+#stage.show-vote-result #lower-answers, #stage.show-vote-result #dialog { filter: blur(2px) brightness(.6); transition: filter .4s; }
+.plate { background: linear-gradient(#f2d48f, #b98a3c); color: #1a1206; }
+.plate-dim { background: linear-gradient(#c9d2e0, #8794aa); color: #101a2c; }
+#plate-judge { top: 398px; }
+#case-banner { background: rgba(8,14,28,.92); border-color: var(--gold-soft); }
+#screen-title { background: radial-gradient(ellipse at 50% 42%, rgba(10,18,36,.7), rgba(3,6,12,.96) 68%); }
+.title-main { color: #ecc978; }
+.takeaway-card { background: rgba(9,16,31,.96); }
+.screen-dim { background: rgba(3,6,12,.78); }
+.dot.ok { background: #4fbf7c; border-color: #4fbf7c; }
+
+/* ---------- Wortmeldungen als Sprechblase über dem Tisch ---------- */
+#hearing-cue {
+  left: 40px !important; right: auto; top: 112px !important; transform: none !important; width: 560px !important;
+  flex-direction: column; align-items: flex-start !important; gap: 4px !important; min-height: 0 !important;
+  padding: 16px 22px 18px !important; border-radius: 14px !important; border: 2px solid rgba(226,187,108,.6) !important; border-left-width: 2px !important;
+  background: rgba(9,16,31,.95) !important; font-size: 26px !important; line-height: 1.32 !important;
+}
+#hearing-cue.side-right { left: auto !important; right: 40px; }
+#hearing-cue::after { content: ''; position: absolute; bottom: -18px; left: 210px; border: 16px solid transparent; border-top-color: rgba(226,187,108,.6); border-bottom: 0; }
+#hearing-cue.side-right::after { left: auto; right: 210px; }
+#hearing-phase { font-size: 16px !important; letter-spacing: 3px !important; }
+#hearing-voice { font-size: 22px; color: #f3d58e !important; }
+#hearing-voice::after { content: '' !important; }
+
+/* ---------- Prof. Lehrner: Zustände ---------- */
+#judge .mouth, #judge .j-pose { display: none; }
+#stage #judge .m-neutral, #stage #judge .pose-rest { display: inline; }
+#stage.judge-asking #judge .m-neutral, #stage.judge-pleased #judge .m-neutral, #stage.judge-stern #judge .m-neutral, #stage.judge-verdict #judge .m-neutral { display: none; }
+#stage.judge-asking #judge .m-asking, #stage.judge-pleased #judge .m-pleased, #stage.judge-stern #judge .m-stern, #stage.judge-verdict #judge .m-verdict { display: inline; }
+#stage.judge-asking #judge .pose-rest, #stage.judge-verdict #judge .pose-rest { display: none; }
+#stage.judge-asking #judge .pose-ask, #stage.judge-verdict #judge .pose-verdict { display: inline; }
+#stage.speaking #judge .mouth { display: none !important; }
+#stage.speaking #judge .m-talk { display: inline !important; transform-box: fill-box; transform-origin: center; animation: talk2 .22s ease-in-out infinite alternate; }
+@keyframes talk2 { from { transform: scaleY(.3); } to { transform: scaleY(1); } }
+
+#j-head { transform-box: view-box; transform-origin: 960px 250px; transition: transform .5s ease; }
+#stage.judge-asking #j-head { transform: rotate(-3deg); }
+#stage.judge-pleased #j-head { transform: rotate(2deg) translateY(1px); }
+#stage.judge-stern #j-head { transform: translateY(1px); }
+#j-upper { animation: breathe 5s ease-in-out infinite; }
+@keyframes breathe { 50% { transform: translateY(1.4px); } }
+
+#j-brows path { transform-box: fill-box; transform-origin: center; transition: transform .35s ease; }
+#stage.judge-asking .brow-r { transform: translateY(-4px) rotate(-6deg); }
+#stage.judge-pleased .brow-l, #stage.judge-pleased .brow-r { transform: translateY(-3px); }
+#stage.judge-stern .brow-l { transform: translateY(3px) rotate(13deg); }
+#stage.judge-stern .brow-r { transform: translateY(3px) rotate(-13deg); }
+#stage.judge-verdict .brow-l { transform: translateY(1px) rotate(6deg); }
+#stage.judge-verdict .brow-r { transform: translateY(1px) rotate(-6deg); }
+
+/* Augenlider: Ruhe offen, zufrieden leicht lächelnd, streng halb geschlossen; Blinzeln */
+#stage { --lid: 0; }
+#stage.judge-pleased { --lid: .35; } #stage.judge-stern { --lid: .55; } #stage.judge-verdict { --lid: .25; }
+#j-lids .lid { transform-box: fill-box; transform-origin: top center; transform: scaleY(var(--lid)); animation: blink2 6s infinite; }
+@keyframes blink2 { 0%, 94%, 100% { transform: scaleY(var(--lid)); } 96% { transform: scaleY(1.05); } }
+#eyes { animation: none; }
+
+/* ---------- Filmische Fall-Einführung ---------- */
+#cinema { position: absolute; inset: 0; z-index: 12; display: none; background: #000; overflow: hidden; }
+#stage.cinema-on #cinema { display: block; }
+#cinema-film, #cinema-film > svg { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+#cinema-film > svg { opacity: 0; transition: opacity .7s ease; }
+#cinema-film > svg.on { opacity: 1; }
+.cinema-bar { position: absolute; left: 0; right: 0; height: 96px; background: #000; z-index: 2; }
+.cinema-bar.top { top: 0; } .cinema-bar.bottom { bottom: 0; }
+#cinema-caption {
+  position: absolute; left: 0; right: 0; bottom: 120px; z-index: 3; text-align: center; padding: 0 160px;
+  font: 600 44px/1.3 Georgia, serif; color: #fff6e2; text-shadow: 0 3px 16px rgba(0,0,0,.9), 0 0 4px rgba(0,0,0,.9);
+  opacity: 0; transition: opacity .5s ease, transform .5s ease; transform: translateY(10px);
+}
+#cinema-caption.on { opacity: 1; transform: none; }
+#cinema-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; z-index: 4; background: rgba(255,255,255,.08); }
+#cinema-progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, #a87a32, #f3d58e); }
+#cinema-skip {
+  position: absolute; right: 40px; top: 26px; z-index: 5; padding: 12px 26px; border-radius: 30px;
+  border: 1px solid rgba(243,213,142,.6); background: rgba(0,0,0,.55); color: #f6eedd; font: 700 24px "Segoe UI", sans-serif; letter-spacing: 1px; cursor: pointer;
+}
+#cinema-skip:hover { background: rgba(243,213,142,.2); }
+#cinema .title-card { font-family: Georgia, serif; }
+
+/* Kamera */
+.cam { transform-box: view-box; transform-origin: 960px 540px; animation-fill-mode: both; animation-timing-function: ease-in-out; }
+.cam-pan-r { animation-name: cam-pan-r; } @keyframes cam-pan-r { from { transform: translateX(80px) scale(1.06); } to { transform: translateX(-80px) scale(1.06); } }
+.cam-pan-l { animation-name: cam-pan-l; } @keyframes cam-pan-l { from { transform: translateX(-70px) scale(1.06); } to { transform: translateX(70px) scale(1.06); } }
+.cam-zoom-in { animation-name: cam-zoom-in; } @keyframes cam-zoom-in { from { transform: scale(1); } to { transform: scale(1.14); } }
+.cam-zoom-out { animation-name: cam-zoom-out; } @keyframes cam-zoom-out { from { transform: scale(1.16); } to { transform: scale(1.02); } }
+.cam-crash { animation-name: cam-crash; animation-timing-function: linear; }
+@keyframes cam-crash { 0% { transform: scale(1.02); } 56% { transform: scale(1.1); } 58% { transform: scale(1.12) translate(14px, -10px); } 60% { transform: scale(1.12) translate(-16px, 8px); } 62% { transform: scale(1.12) translate(10px, 6px); } 64% { transform: scale(1.12) translate(-6px, -4px); } 68%, 100% { transform: scale(1.12); } }
+
+/* Bewegte Objekte (Dauer kommt vom Shot) */
+.mv { transform-box: view-box; animation-fill-mode: both; animation-duration: inherit; }
+.drive-r { animation: drive-r 4.8s linear both; } @keyframes drive-r { from { transform: translateX(-700px); } to { transform: translateX(900px); } }
+.drive-l { animation: drive-l 4.8s linear both; } @keyframes drive-l { from { transform: translateX(800px); } to { transform: translateX(-900px); } }
+.wheel { transform-box: fill-box; transform-origin: center; animation: spin .5s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.crashA { animation: crashA 4.8s both; } @keyframes crashA { 0% { transform: translateX(-760px); } 58% { transform: translateX(0); } 70%, 100% { transform: translate(40px, 26px) rotate(14deg); } }
+.crashB { animation: crashB 4.8s both; } @keyframes crashB { 0% { transform: translateY(640px); } 58% { transform: translateY(0); } 70%, 100% { transform: translate(-20px, 30px) rotate(-22deg); } }
+.crashA, .crashB { transform-box: fill-box; transform-origin: center; }
+.flash { opacity: 0; animation: flash 4.8s both; transform-box: fill-box; transform-origin: center; }
+@keyframes flash { 0%, 56% { opacity: 0; transform: scale(.3); } 59% { opacity: 1; transform: scale(1); } 75%, 100% { opacity: 0; transform: scale(1.6); } }
+.smoke { animation: smoke 2.4s ease-out infinite; transform-box: fill-box; transform-origin: center; opacity: 0; }
+.smoke.d2 { animation-delay: .8s; } .smoke.d3 { animation-delay: 1.6s; }
+@keyframes smoke { 0% { opacity: 0; transform: translateY(0) scale(.6); } 30% { opacity: .55; } 100% { opacity: 0; transform: translateY(-140px) scale(1.8); } }
+.pop-in { animation: pop-in .6s cubic-bezier(.2,1.4,.4,1) both; transform-box: fill-box; transform-origin: center; }
+.d1 { animation-delay: .6s; } .d2s { animation-delay: 1.2s; } .d3s { animation-delay: 1.9s; } .d4s { animation-delay: 2.6s; }
+@keyframes pop-in { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+.slide-up { animation: slide-up 1.2s ease-out both; } @keyframes slide-up { from { opacity: 0; transform: translateY(160px); } to { opacity: 1; transform: none; } }
+.slide-in-r { animation: slide-in-r 1.1s ease-out both; } @keyframes slide-in-r { from { opacity: 0; transform: translateX(400px) rotate(8deg); } to { opacity: 1; transform: none; } }
+.stamp { animation: stamp .45s cubic-bezier(.2,1.6,.4,1) 1.6s both; transform-box: fill-box; transform-origin: center; }
+@keyframes stamp { from { opacity: 0; transform: scale(2.2) rotate(-14deg); } to { opacity: .92; transform: scale(1) rotate(-8deg); } }
+.scan { animation: scan 3.6s ease-in-out .4s both; } @keyframes scan { 0% { transform: translate(-260px, -150px); } 45% { transform: translate(80px, -40px); } 75%, 100% { transform: translate(0, 0); } }
+.mark { opacity: 0; animation: mark .5s ease-out 3.1s both; } @keyframes mark { from { opacity: 0; } to { opacity: 1; } }
+.buzz { animation: buzz .9s ease-in-out .3s 3; transform-box: fill-box; transform-origin: center; }
+@keyframes buzz { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-3deg); } 40% { transform: rotate(3deg); } 60% { transform: rotate(-2deg); } 80% { transform: rotate(2deg); } }
+.fly-in { animation: fly-in 1.6s cubic-bezier(.2,.8,.2,1) .5s both; } @keyframes fly-in { from { opacity: 0; transform: translate(-600px, 200px) rotate(-20deg) scale(.6); } to { opacity: 1; transform: none; } }
+.shake-head { animation: shake-head 1.2s ease-in-out .6s 2; transform-box: fill-box; transform-origin: bottom center; }
+@keyframes shake-head { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
+.glow { animation: glow 2s ease-in-out infinite alternate; } @keyframes glow { from { opacity: .55; } to { opacity: 1; } }
+.title-rise { animation: title-rise 1.2s ease-out both; } @keyframes title-rise { from { opacity: 0; transform: translateY(40px); letter-spacing: 30px; } to { opacity: 1; transform: none; } }
+.fade-late { animation: fade-late 1s ease-out 1.4s both; } @keyframes fade-late { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { #cinema * { animation-duration: .01ms !important; animation-delay: 0s !important; } }

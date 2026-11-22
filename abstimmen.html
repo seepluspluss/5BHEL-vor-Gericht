@@ -1,6 +1,220 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>5BHEL – Abstimmen</title><style>body{background:#141b27;color:#f5eee1;font:18px system-ui;margin:0;padding:22px}main{max-width:520px;margin:30px auto}h1{color:#e8c47c}input,button{font:inherit;padding:15px;border-radius:10px;margin:7px 0;box-sizing:border-box;width:100%}input{background:#f6f1e7;border:0}button{background:#d9aa54;color:#181818;border:0;font-weight:bold;cursor:pointer}button:disabled{opacity:.55}#choices button{background:#27374c;color:white;text-align:left;border:1px solid #b79a65}#status{padding:12px;min-height:2em}small{color:#b9bec7}</style></head><body><main><h1>⚖️ 5BHEL vor Gericht</h1><div id="login"><p>Mit deinem Namen und dem Raumcode teilnehmen.</p><input id="room" inputmode="numeric" maxlength="6" placeholder="6-stelliger Raumcode"><input id="name" maxlength="32" placeholder="Dein Name"><button id="join">Teilnehmen</button></div><div id="game" hidden><p>Angemeldet als <b id="who"></b></p><h2 id="title">Warte auf Prof. Lehrner …</h2><div id="choices"></div><p id="status" aria-live="polite"></p><small>Eine Stimme pro Frage. Nach der Abgabe ist sie verbindlich.</small></div></main><script src="js/cases.js"></script><script>
-let code='',token='',lastKey='',voted=false;const $=id=>document.getElementById(id);async function api(endpoint,data){let r=await fetch('/api/'+endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});let j=await r.json();if(!r.ok)throw Error(j.error||'Fehler');return j}
-$('room').value=new URLSearchParams(location.search).get('code')||'';
-$('join').onclick=async()=>{try{code=$('room').value.trim();let j=await api('join',{code,name:$('name').value});token=j.token;$('who').textContent=j.name;$('login').hidden=true;$('game').hidden=false;await refresh();setInterval(refresh,1200)}catch(e){alert(e.message)}};
-async function refresh(){try{let r=await fetch('/api/state?code='+encodeURIComponent(code));let j=await r.json();if(!r.ok)throw Error(j.error);let s=j.room;if(s.closed){$('title').textContent='Verhandlung beendet';$('choices').replaceChildren();return}if(!s.question){$('title').textContent='Warte auf die erste Frage …';return}let key=s.question.case+':'+s.question.question;if(key!==lastKey){lastKey=key;voted=false;let q=window.GAME_DATA.cases[s.question.case].questions[s.question.question];$('title').textContent='Fall '+(s.question.case+1)+' · Frage '+(s.question.question+1);$('choices').replaceChildren();q.answers.forEach((answer,i)=>{let b=document.createElement('button');b.textContent='ABC'[i]+' · '+answer;b.onclick=async()=>{try{await api('vote',{code,token,choice:i});voted=true;lock();$('status').textContent='Stimme abgegeben. Warte auf das Ergebnis.'}catch(e){$('status').textContent=e.message}};$('choices').append(b)});$('status').textContent='Wähle eine Antwort.'}if(!s.open){lock();$('status').textContent=s.winner===null?'Keine Stimmen abgegeben.':'Abstimmung beendet. Mehrheitsantwort: '+ 'ABC'[s.winner]}}catch(e){$('status').textContent='Verbindung unterbrochen – versuche erneut …'}}function lock(){$('choices').querySelectorAll('button').forEach(b=>b.disabled=true)}
-</script></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1626">
+<title>5BHEL vor Gericht – Abstimmen</title>
+<link rel="stylesheet" href="css/live.css">
+</head>
+<body>
+<main>
+  <div class="brand">
+    <div class="brand-title">5BHEL <span>VOR GERICHT</span></div>
+    <span id="conn" class="pill">Abstimmung</span>
+  </div>
+
+  <!-- Beitreten -->
+  <section id="v-join" class="card">
+    <div class="kicker">Die Kanzlei 5BHEL</div>
+    <h1>Mitstimmen</h1>
+    <p class="muted">Du entscheidest mit der Klasse über jede Frage. Ein Spitzname genügt.</p>
+    <form id="join-form" autocomplete="off">
+      <label for="room">Raumcode</label>
+      <input id="room" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="6-stelliger Code" required>
+      <label for="name">Name</label>
+      <input id="name" maxlength="32" placeholder="Dein Name oder Spitzname" required>
+      <button class="btn" id="join-btn">Teilnehmen</button>
+    </form>
+    <div id="join-error" class="error" role="alert"></div>
+  </section>
+
+  <!-- Spiel -->
+  <section id="v-game" class="hidden">
+    <div class="card" id="c-main">
+      <div class="kicker" id="g-kicker">Verhandlung</div>
+      <div id="g-wait" class="waiting">
+        <div class="gavel" aria-hidden="true">⚖️</div>
+        <h2 id="g-wait-title">Warte auf Prof. Lehrner …</h2>
+        <p class="muted" id="g-wait-text">Die Abstimmung startet, sobald die Richterin eine Frage stellt.</p>
+      </div>
+      <div id="g-vote" class="hidden">
+        <h2 id="g-topic"></h2>
+        <div class="q-ask" id="g-ask"></div>
+        <div class="timer" id="g-timer"><div class="timer-bar"><span id="g-timer-bar"></span></div><div class="timer-sec" id="g-sec"></div></div>
+        <div class="choices" id="g-choices"></div>
+        <div class="voted-note hidden" id="g-voted"></div>
+        <div class="error" id="g-error" role="alert"></div>
+      </div>
+      <div id="g-result" class="hidden">
+        <h2 id="g-res-title">Die Klasse hat entschieden</h2>
+        <div class="muted" id="g-res-sub"></div>
+        <div class="bars" id="g-bars"></div>
+        <div class="verdict" id="g-verdict"></div>
+        <div class="judgement hidden" id="g-judgement"></div>
+      </div>
+    </div>
+    <div class="score-line"><span>Angemeldet als <b id="who"></b></span><span>Punkte der Klasse: <b id="score">0</b></span></div>
+  </section>
+</main>
+<script>
+(function () {
+  'use strict';
+  var L = ['A', 'B', 'C'];
+  var $ = function (id) { return document.getElementById(id); };
+  var code = '', token = '', poll = null, lastQKey = '', sending = false, deadline = 0, duration = 30, lastState = null;
+  var params = new URLSearchParams(location.search);
+  $('room').value = (params.get('code') || '').replace(/\D/g, '').slice(0, 6);
+  try { $('name').value = localStorage.getItem('5bhel-name') || ''; } catch (e) {}
+
+  function api(ep, data) {
+    return fetch('/api/' + ep, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) { var e = Error(j.error || 'Fehler'); e.status = r.status; e.data = j; throw e; } return j; }); });
+  }
+  function show(id) { ['g-wait', 'g-vote', 'g-result'].forEach(function (x) { $(x).classList.toggle('hidden', x !== id); }); }
+  function conn(ok, text) { $('conn').textContent = text; $('conn').className = 'pill ' + (ok ? 'ok' : 'bad'); }
+
+  function join(saved) {
+    var c = $('room').value.trim();
+    var body = { code: c, name: $('name').value };
+    if (saved) body.token = saved;
+    $('join-btn').disabled = true; $('join-error').textContent = '';
+    return api('join', body).then(function (j) {
+      code = c; token = j.token;
+      try { localStorage.setItem('5bhel-token-' + code, token); localStorage.setItem('5bhel-name', j.name); } catch (e) {}
+      $('who').textContent = j.name;
+      $('v-join').classList.add('hidden'); $('v-game').classList.remove('hidden');
+      history.replaceState(null, '', '?code=' + code);
+      render(j.room);
+      if (poll) clearInterval(poll);
+      poll = setInterval(refresh, 1000);
+    }).catch(function (e) {
+      $('join-error').textContent = e.message;
+      if (saved) { try { localStorage.removeItem('5bhel-token-' + c); } catch (x) {} }
+    }).then(function () { $('join-btn').disabled = false; });
+  }
+  $('join-form').addEventListener('submit', function (e) { e.preventDefault(); join(null); });
+
+  // automatische Wiederanmeldung nach Neuladen (gleiche Identität → keine Doppelstimme)
+  (function () {
+    var c = $('room').value, saved = null;
+    try { saved = c && localStorage.getItem('5bhel-token-' + c); } catch (e) {}
+    if (saved) join(saved);
+  })();
+
+  function refresh() {
+    fetch('/api/state?code=' + encodeURIComponent(code) + '&token=' + encodeURIComponent(token), { cache: 'no-store' })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw Error(j.error || 'Fehler'); return j.room; }); })
+      .then(function (s) { conn(true, '● verbunden'); render(s); })
+      .catch(function (e) {
+        conn(false, '● Verbindung …');
+        if (/Raum nicht gefunden/.test(e.message)) { clearInterval(poll); $('g-wait-title').textContent = 'Raum nicht mehr verfügbar'; $('g-wait-text').textContent = 'Bitte den neuen QR-Code scannen.'; show('g-wait'); }
+      });
+  }
+
+  function render(s) {
+    lastState = s;
+    $('score').textContent = s.score;
+    if (s.me === undefined && token) { /* erster Join-Response enthält keine me-Daten */ }
+    var v = s.vote, me = s.me || {};
+    if (s.closed) { $('g-kicker').textContent = 'Verhandlung beendet'; waiting('Die Verhandlung ist geschlossen', 'Endstand der Klasse: ' + s.score + ' von ' + s.maxScore + ' Punkten.'); return; }
+    if (v && s.question && v.c === s.question.c) $('g-kicker').textContent = 'Fall ' + (v.c + 1) + ' · Frage ' + (v.q + 1) + (v.round > 1 ? ' · Stichwahl' : '');
+    var sc = s.scene || {};
+    var currentQ = v && (sc.name === 'question' || sc.name === 'explain') && sc.c === v.c && sc.q === v.q;
+    if (v && (v.phase === 'voting' || currentQ)) {
+      if (v.phase === 'voting') return voting(s, v, me);
+      return result(s, v, me);
+    }
+    var t = s.caseTitles || [];
+    $('g-kicker').textContent = sc.c != null ? 'Fall ' + (sc.c + 1) + ' · ' + (t[sc.c] || '') : 'Verhandlung';
+    if (sc.name === 'cinema' || sc.name === 'intro') waiting('Fall ' + (sc.c + 1) + ': ' + (t[sc.c] || ''), 'Schau auf den Beamer – gleich folgt die erste Frage.');
+    else if (sc.name === 'summary') waiting('Fall ' + (sc.c + 1) + ' abgeschlossen', 'Punkte der Klasse bisher: ' + s.score + '.');
+    else if (sc.name === 'final') waiting('Urteilsverkündung', 'Die Klasse hat ' + s.score + ' von ' + s.maxScore + ' Punkten erreicht.');
+    else waiting('Warte auf Prof. Lehrner …', 'Die Abstimmung startet, sobald die Richterin eine Frage stellt.');
+  }
+  function waiting(title, text) { $('g-wait-title').textContent = title; $('g-wait-text').textContent = text; show('g-wait'); }
+
+  function voting(s, v, me) {
+    show('g-vote');
+    var qk = v.id;
+    deadline = Date.now() + v.remainingMs; duration = v.duration;
+    if (qk !== lastQKey) {
+      lastQKey = qk;
+      $('g-topic').textContent = s.question.topic;
+      $('g-ask').textContent = s.question.ask;
+      $('g-error').textContent = '';
+      var box = $('g-choices'); box.replaceChildren();
+      s.question.answers.forEach(function (a, i) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'choice' + (v.options.indexOf(i) < 0 ? ' out' : '');
+        b.innerHTML = '<span class="letter"></span><span class="txt"></span>';
+        b.querySelector('.letter').textContent = L[i]; b.querySelector('.txt').textContent = a;
+        b.addEventListener('click', function () { vote(i, v.id); });
+        box.append(b);
+      });
+    }
+    lockState(me.voteId === v.id ? me.vote : null);
+  }
+  function lockState(mine) {
+    var btns = $('g-choices').querySelectorAll('.choice');
+    btns.forEach(function (b, i) { b.disabled = mine != null || sending; b.classList.toggle('mine', mine === i); });
+    $('g-voted').classList.toggle('hidden', mine == null);
+    if (mine != null) $('g-voted').textContent = '✓ Deine Stimme: ' + L[mine] + ' – verbindlich abgegeben. Warte auf das Ergebnis.';
+  }
+  function vote(i, voteId) {
+    if (sending) return;
+    sending = true; lockState(null);
+    api('vote', { code: code, token: token, choice: i, voteId: voteId })
+      .then(function (j) { lockState(j.myVote); })
+      .catch(function (e) {
+        if (e.data && Number.isInteger(e.data.myVote)) lockState(e.data.myVote);
+        else { $('g-error').textContent = e.message; lockState(null); }
+        if (e.status === 403) { $('v-game').classList.add('hidden'); $('v-join').classList.remove('hidden'); }
+      })
+      .then(function () { sending = false; refresh(); });
+  }
+  setInterval(function () {
+    if (!lastState || !lastState.vote || lastState.vote.phase !== 'voting') return;
+    var left = Math.max(0, deadline - Date.now());
+    $('g-sec').textContent = Math.ceil(left / 1000) + ' s';
+    $('g-timer-bar').style.width = (100 * left / (duration * 1000)) + '%';
+  }, 250);
+
+  function result(s, v, me) {
+    show('g-result');
+    var d = s.decision;
+    $('g-res-sub').textContent = (v.total || 0) + ' Stimmen' + (me.vote != null && me.voteId === v.id ? ' · deine Stimme: ' + L[me.vote] : '');
+    var bars = $('g-bars');
+    var key = v.id + ':' + (d ? d.method : '');
+    if (bars.getAttribute('data-k') !== key) {
+      bars.setAttribute('data-k', key); bars.replaceChildren();
+      [0, 1, 2].forEach(function (i) {
+        if (v.options.indexOf(i) < 0) return;
+        var row = document.createElement('div');
+        var win = d ? d.chosen === i : v.winner === i;
+        row.className = 'bar-row' + (win ? ' win' : '');
+        row.innerHTML = '<b></b><div class="bar-track"><div class="bar-fill"></div></div><span class="bar-num"></span>';
+        row.querySelector('b').textContent = L[i];
+        row.querySelector('.bar-num').textContent = v.counts[i] + ' · ' + v.percents[i] + ' %';
+        bars.append(row);
+        var f = row.querySelector('.bar-fill');
+        requestAnimationFrame(function () { requestAnimationFrame(function () { f.style.width = v.percents[i] + '%'; }); });
+      });
+    }
+    var vd = $('g-verdict');
+    vd.className = 'verdict';
+    if (d && d.method === 'skipped') vd.textContent = 'Frage übersprungen';
+    else if (d) vd.textContent = (d.method === 'admin' ? 'Entscheidung der Spielleitung: ' : 'Mehrheitsentscheidung: ') + L[d.chosen];
+    else if (v.outcome === 'tie') { vd.textContent = 'Gleichstand ' + v.tied.map(function (i) { return L[i]; }).join(' / ') + ' – die Spielleitung entscheidet'; vd.classList.add('tie'); }
+    else { vd.textContent = 'Keine Stimmen abgegeben'; vd.classList.add('tie'); }
+    var jd = $('g-judgement');
+    if (d && d.revealed && d.method !== 'skipped') {
+      jd.className = 'judgement ' + (d.ok ? 'ok' : 'bad');
+      jd.textContent = d.ok ? '✓ Die 5BHEL hat korrekt entschieden. +100 Punkte' : '✗ Die Mehrheit hat sich geirrt. Richtig ist ' + L[d.correct] + '.';
+    } else if (d && d.revealed) { jd.className = 'judgement bad'; jd.textContent = 'Richtig ist ' + L[d.correct] + '.'; }
+    else { jd.className = 'judgement hidden'; }
+  }
+})();
+</script>
+</body>
+</html>

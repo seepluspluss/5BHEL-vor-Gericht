@@ -227,7 +227,7 @@ window.GAME_DATA = {
   // Dramaturgische Einwürfe: kurze, fallbezogene Wortmeldungen statt generischer Quiztexte.
   hearing: [
     [
-      {phase:"ANTRAG", voice:"Frau Sorger", line:"Ich will meinen Schaden ersetzt bekommen. Ich möchte, dass Herr Reiniger die Reparatur bezahlt.", right:"Das ist der richtige Rechtsweg. Wir verhandeln einen Schadenersatzanspruch.", wrong:"Einspruch gegen Ihre Einordnung, Kanzlei 5BHEL. Hier geht es um Schadenersatz, nicht um Bestrafung."},
+      {phase:"ANTRAG", voice:"Frau Sorger", line:"Ich will meinen Schaden ersetzt bekommen. Ich möchte, dass Herr Reiniger die Reparatur bezahlt.", right:"Das ist der richtige Rechtsweg. Wir verhandeln einen Schadenersatzanspruch.", wrong:"Das Gericht widerspricht Ihrer Einordnung, Kanzlei 5BHEL. Hier geht es um Schadenersatz, nicht um Bestrafung."},
       {phase:"ZUSTÄNDIGKEIT", voice:"Gerichtsdiener", line:"Die Klage über 6.000 Euro liegt vor. An welches Gericht soll die Akte gehen?", right:"Die Akte kann an das sachlich zuständige Gericht weitergeleitet werden.", wrong:"Halt! Prüfen Sie den Streitwert, bevor Sie die Akte weiterschicken."},
       {phase:"BEWEISAUFNAHME", voice:"Herr Reiniger", line:"Sie war zu schnell! Ich bestreite, dass ich allein verantwortlich bin.", right:"Gut. Behauptungen allein reichen nicht – wir brauchen überprüfbare Beweise.", wrong:"Eine bloße Behauptung gewinnt noch keinen Prozess. Was lässt sich tatsächlich beweisen?"},
       {phase:"KOSTENENTSCHEIDUNG", voice:"Frau Sorger", line:"Und wenn ich nur die Hälfte bekomme – muss ich trotzdem alles bezahlen?", right:"Richtig. Auch das Verhältnis von Obsiegen und Unterliegen zählt.", wrong:"Die Kostenfrage ist heikel. Ein teilweiser Erfolg bedeutet nicht automatisch einen vollen Kostenersatz."}
@@ -242,7 +242,7 @@ window.GAME_DATA = {
       {phase:"KLAGEEINGANG", voice:"Bankvertretung", line:"Wir klagen 28.000 Euro ein. Herr Winter bestreitet die Höhe unserer Forderung.", right:"Die Zuständigkeit ist geklärt. Das Verfahren kann weitergehen.", wrong:"Die Höhe des Streitwerts ist entscheidend. Prüfen Sie die erste Instanz."},
       {phase:"VERTRETUNG", voice:"Herr Winter", line:"Ich kann mir keinen Anwalt leisten. Muss ich den Prozess deshalb aufgeben?", right:"Richtig. Die Verfahrenshilfe kann den Zugang zum Gericht ermöglichen.", wrong:"So einfach ist es nicht. Prüfen Sie Anwaltspflicht und Verfahrenshilfe gemeinsam."},
       {phase:"BEWEISPRÜFUNG", voice:"Herr Winter", line:"Hier sind meine Überweisungen. Die Bank hat manche Raten offenbar nicht berücksichtigt.", right:"Die Unterlagen gehören in die Beweisaufnahme. Sehr gut.", wrong:"Weder der Bank noch Herrn Winter wird automatisch geglaubt. Belege sind entscheidend."},
-      {phase:"VERGLEICHSANGEBOT", voice:"Bankvertretung", line:"Wir akzeptieren 20.000 Euro in Raten, wenn die Sache damit erledigt ist.", right:"Ein Vergleich kann den Streit ohne Urteil beenden. Die Folgen müssen klar sein.", wrong:"Ein Vergleich ist kein gewöhnliches Urteil. Seine Wirkung ist trotzdem verbindlich."}
+      {phase:"VERGLEICHSANGEBOT", voice:"Bankvertretung", line:"Wir akzeptieren 20.000 Euro in Raten, wenn die Sache damit erledigt ist.", right:"Ein Vergleich kann den Streit ohne Urteil beenden. Die Folgen müssen klar sein.", wrong:"Ein Vergleich ist kein Urteil – seine Wirkung ist trotzdem verbindlich und vollstreckbar."}
     ]
   ],
 
@@ -261,7 +261,9 @@ window.GAME_DATA = {
       "Das Gericht sieht das anders.",
       "Abgelehnt – das stimmt so nicht."
     ],
-    skipped: "Diese Frage wird übersprungen. Die richtige Lösung lautet:"
+    skipped: "Diese Frage wird übersprungen. Die richtige Lösung lautet:",
+    liveRight: "Die 5BHEL hat korrekt entschieden.",
+    liveWrong: "Die Mehrheit hat sich geirrt. Sehen wir uns die Rechtslage genauer an."
   },
 
   finalTiers: [

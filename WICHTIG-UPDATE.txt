@@ -1,3 +1,5 @@
+HINWEIS: Aktuelle Anleitung siehe UPDATE-ANLEITUNG.md (Version 2.0).
+
 UPDATE – QR-CODE + AUTOMATISCHE ABSTIMMUNG + MODERATOR-SCHUTZ
 
 1. Lade die NEUEN Dateien in dein bestehendes GitHub-Repository in denselben Unterordner 5BHEL-vor-Gericht hoch. Die vorhandenen Dateien ersetzen.
@@ -8,10 +10,10 @@ UPDATE – QR-CODE + AUTOMATISCHE ABSTIMMUNG + MODERATOR-SCHUTZ
    Das Passwort NIE auf GitHub hochladen oder der Klasse mitteilen.
 3. Öffne die Render-URL. Du wirst zum Moderator-Login umgeleitet.
 4. Nach Anmeldung Raum erstellen. QR-Code erscheint; Schüler scannen ihn.
-5. Standardmäßig wird nach 30 Sekunden automatisch die Mehrheit übernommen.
-   Bei null Stimmen bleibt die Abstimmung offen; manuell kann beendet werden, sobald Stimmen vorliegen.
+5. Der Server beendet jede Abstimmung automatisch (Zeit abgelaufen oder alle haben abgestimmt).
+   Bei null Stimmen wird keine Mehrheit angenommen: neu abstimmen oder Frage überspringen.
 6. Die Schüler verwenden ausschließlich /abstimmen.html oder den QR-Code.
 
 HINWEISE: Die Abstimmungsräume sind nur im Arbeitsspeicher; ein Render-Neustart löscht aktive Räume.
 Das Moderator-Passwort schützt die Steuerung, nicht vor dem Teilen von Raumcodes oder mehrfachen Teilnehmeranmeldungen.
-Bei Stimmengleichstand wird zufällig eine der führenden Antworten ausgewählt.
+Bei Stimmengleichstand gibt es seit Version 2.0 KEINE Zufallsauswahl mehr: Stichwahl oder offene Entscheidung der Spielleitung.

@@ -5,155 +5,249 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>5BHEL vor Gericht</title>
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 <div id="stage" class="mode-title">
 
-  <!-- ===== Gerichtssaal (Hintergrund) ===== -->
+  <!-- ===== Gerichtssaal (Hintergrund) – Marineblau, Mahagoni, Gold ===== -->
   <svg id="room" viewBox="0 0 1920 1080" aria-hidden="true">
     <defs>
       <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#140b06"/>
-        <stop offset=".45" stop-color="#33200f"/>
-        <stop offset="1" stop-color="#1a0f07"/>
+        <stop offset="0" stop-color="#070d18"/>
+        <stop offset=".42" stop-color="#14223a"/>
+        <stop offset="1" stop-color="#0a1220"/>
       </linearGradient>
       <linearGradient id="gPanel" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#4a2c16"/>
-        <stop offset=".5" stop-color="#5a3519"/>
-        <stop offset="1" stop-color="#432713"/>
+        <stop offset="0" stop-color="#3a1611"/>
+        <stop offset=".5" stop-color="#4e1f16"/>
+        <stop offset="1" stop-color="#341410"/>
       </linearGradient>
       <linearGradient id="gWood" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#7a4a26"/>
-        <stop offset="1" stop-color="#3d2311"/>
+        <stop offset="0" stop-color="#6e2c1d"/>
+        <stop offset=".55" stop-color="#4a1c13"/>
+        <stop offset="1" stop-color="#2a0f0a"/>
       </linearGradient>
       <linearGradient id="gLedge" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#b07a45"/>
-        <stop offset="1" stop-color="#6e4422"/>
+        <stop offset="0" stop-color="#9a4a2e"/>
+        <stop offset=".5" stop-color="#70301e"/>
+        <stop offset="1" stop-color="#4a1d12"/>
+      </linearGradient>
+      <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f3d58e"/>
+        <stop offset="1" stop-color="#a87a32"/>
       </linearGradient>
       <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#22140a"/>
-        <stop offset="1" stop-color="#0b0604"/>
+        <stop offset="0" stop-color="#121b2c"/>
+        <stop offset="1" stop-color="#05080f"/>
+      </linearGradient>
+      <linearGradient id="gDrape" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#0c1830"/>
+        <stop offset=".3" stop-color="#1b2f55"/>
+        <stop offset=".55" stop-color="#0f1d38"/>
+        <stop offset=".8" stop-color="#20365f"/>
+        <stop offset="1" stop-color="#0b162b"/>
+      </linearGradient>
+      <linearGradient id="gChair" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#22355a"/>
+        <stop offset="1" stop-color="#0d172b"/>
       </linearGradient>
       <radialGradient id="gLamp" cx=".5" cy=".5" r=".5">
-        <stop offset="0" stop-color="#ffd9a0" stop-opacity=".55"/>
-        <stop offset=".4" stop-color="#ffb35c" stop-opacity=".18"/>
+        <stop offset="0" stop-color="#ffdca6" stop-opacity=".5"/>
+        <stop offset=".4" stop-color="#ffb35c" stop-opacity=".14"/>
         <stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/>
       </radialGradient>
-      <radialGradient id="gSpot" cx=".5" cy=".45" r=".5">
-        <stop offset="0" stop-color="#ffcf8a" stop-opacity=".34"/>
-        <stop offset=".6" stop-color="#ffb060" stop-opacity=".08"/>
+      <radialGradient id="gSpot" cx=".5" cy=".42" r=".5">
+        <stop offset="0" stop-color="#ffd896" stop-opacity=".42"/>
+        <stop offset=".55" stop-color="#ffb868" stop-opacity=".1"/>
         <stop offset="1" stop-color="#ffb060" stop-opacity="0"/>
       </radialGradient>
-      <radialGradient id="gVignette" cx=".5" cy=".42" r=".75">
-        <stop offset=".55" stop-color="#000" stop-opacity="0"/>
-        <stop offset="1" stop-color="#000" stop-opacity=".65"/>
+      <linearGradient id="gRay" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffe2ad" stop-opacity=".2"/>
+        <stop offset="1" stop-color="#ffe2ad" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="gVignette" cx=".5" cy=".4" r=".78">
+        <stop offset=".5" stop-color="#000" stop-opacity="0"/>
+        <stop offset="1" stop-color="#000" stop-opacity=".72"/>
       </radialGradient>
-      <linearGradient id="gLeather" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#5a1e1e"/>
-        <stop offset="1" stop-color="#2a0d0d"/>
+      <linearGradient id="gSkin" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f7dcc4"/>
+        <stop offset="1" stop-color="#ebc3a4"/>
+      </linearGradient>
+      <linearGradient id="gHair" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#f8e2a6"/>
+        <stop offset=".45" stop-color="#e4bd6c"/>
+        <stop offset="1" stop-color="#b98b42"/>
+      </linearGradient>
+      <linearGradient id="gHairBack" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#c99a4e"/>
+        <stop offset="1" stop-color="#8f6a30"/>
+      </linearGradient>
+      <linearGradient id="gRobe" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#050507"/>
+        <stop offset=".45" stop-color="#1a1a22"/>
+        <stop offset=".55" stop-color="#15151c"/>
+        <stop offset="1" stop-color="#050507"/>
       </linearGradient>
       <symbol id="panel" viewBox="0 0 170 400">
         <rect x="0" y="0" width="170" height="400" fill="url(#gPanel)"/>
-        <rect x="14" y="16" width="142" height="170" fill="none" stroke="#2a170a" stroke-width="5"/>
-        <rect x="18" y="20" width="134" height="162" fill="none" stroke="#7a4b25" stroke-opacity=".35" stroke-width="2"/>
-        <rect x="14" y="208" width="142" height="176" fill="none" stroke="#2a170a" stroke-width="5"/>
-        <rect x="18" y="212" width="134" height="168" fill="none" stroke="#7a4b25" stroke-opacity=".35" stroke-width="2"/>
+        <rect x="14" y="16" width="142" height="170" fill="none" stroke="#1c0907" stroke-width="5"/>
+        <rect x="18" y="20" width="134" height="162" fill="none" stroke="#c99a52" stroke-opacity=".2" stroke-width="2"/>
+        <rect x="14" y="208" width="142" height="176" fill="none" stroke="#1c0907" stroke-width="5"/>
+        <rect x="18" y="212" width="134" height="168" fill="none" stroke="#c99a52" stroke-opacity=".2" stroke-width="2"/>
       </symbol>
       <symbol id="silhouette" viewBox="0 0 160 150">
-        <path d="M10 150 C12 112 38 96 80 96 C122 96 148 112 150 150 Z" fill="#120a05"/>
-        <ellipse cx="80" cy="58" rx="34" ry="40" fill="#120a05"/>
-        <path d="M46 58 C46 24 62 14 80 14 C98 14 114 24 114 58" fill="none" stroke="#c98c4c" stroke-opacity=".35" stroke-width="3"/>
+        <path d="M10 150 C12 112 38 96 80 96 C122 96 148 112 150 150 Z" fill="#060a12"/>
+        <ellipse cx="80" cy="58" rx="34" ry="40" fill="#060a12"/>
+        <path d="M46 58 C46 24 62 14 80 14 C98 14 114 24 114 58" fill="none" stroke="#e2b46a" stroke-opacity=".35" stroke-width="3"/>
       </symbol>
     </defs>
 
     <rect width="1920" height="1080" fill="url(#gWall)"/>
-    <!-- Wandvertäfelung -->
-    <rect x="0" y="86" width="1920" height="14" fill="#5d3a1c"/>
-    <rect x="0" y="100" width="1920" height="4" fill="#1a0e06"/>
+    <!-- Kassettendecke / Gesims -->
+    <rect x="0" y="82" width="1920" height="12" fill="url(#gGold)" opacity=".55"/>
+    <rect x="0" y="94" width="1920" height="5" fill="#05080f"/>
+    <!-- Wandvertäfelung in Mahagoni -->
     <g>
-      <use href="#panel" x="25" y="110" width="170" height="400"/>
-      <use href="#panel" x="215" y="110" width="170" height="400"/>
-      <use href="#panel" x="405" y="110" width="170" height="400"/>
-      <use href="#panel" x="595" y="110" width="170" height="400"/>
-      <use href="#panel" x="785" y="110" width="170" height="400"/>
-      <use href="#panel" x="975" y="110" width="170" height="400"/>
-      <use href="#panel" x="1165" y="110" width="170" height="400"/>
-      <use href="#panel" x="1355" y="110" width="170" height="400"/>
-      <use href="#panel" x="1545" y="110" width="170" height="400"/>
-      <use href="#panel" x="1735" y="110" width="170" height="400"/>
+      <use href="#panel" x="25" y="104" width="170" height="410"/>
+      <use href="#panel" x="215" y="104" width="170" height="410"/>
+      <use href="#panel" x="405" y="104" width="170" height="410"/>
+      <use href="#panel" x="1345" y="104" width="170" height="410"/>
+      <use href="#panel" x="1535" y="104" width="170" height="410"/>
+      <use href="#panel" x="1725" y="104" width="170" height="410"/>
     </g>
-    <rect x="0" y="510" width="1920" height="570" fill="url(#gFloor)"/>
-    <rect x="0" y="506" width="1920" height="8" fill="#5d3a1c"/>
+    <!-- Säulen mit Goldkapitell -->
+    <g>
+      <rect x="596" y="104" width="44" height="420" fill="#2d110c"/><rect x="600" y="104" width="10" height="420" fill="#5a2519" opacity=".7"/>
+      <rect x="586" y="100" width="64" height="16" fill="url(#gGold)" opacity=".8"/>
+      <rect x="1280" y="104" width="44" height="420" fill="#2d110c"/><rect x="1284" y="104" width="10" height="420" fill="#5a2519" opacity=".7"/>
+      <rect x="1270" y="100" width="64" height="16" fill="url(#gGold)" opacity=".8"/>
+    </g>
+    <!-- Vorhänge hinter der Richterbank -->
+    <path d="M650 99 L1270 99 L1270 120 C1200 150 1100 150 1040 128 L1040 520 L880 520 L880 128 C820 150 720 150 650 120 Z" fill="#0a1428"/>
+    <path d="M650 99 L880 99 L880 520 L700 520 C690 420 676 260 650 160 Z" fill="url(#gDrape)"/>
+    <path d="M1270 99 L1040 99 L1040 520 L1220 520 C1230 420 1244 260 1270 160 Z" fill="url(#gDrape)"/>
+    <path d="M650 99 L1270 99 L1270 128 C1150 170 770 170 650 128 Z" fill="#1c3058"/>
+    <path d="M650 126 C770 168 1150 168 1270 126" fill="none" stroke="url(#gGold)" stroke-width="4" opacity=".8"/>
+    <rect x="0" y="512" width="1920" height="568" fill="url(#gFloor)"/>
+    <rect x="0" y="508" width="1920" height="8" fill="#4a1d12"/>
 
     <!-- Licht -->
-    <ellipse cx="960" cy="300" rx="760" ry="430" fill="url(#gSpot)"/>
-    <ellipse cx="300" cy="210" rx="260" ry="260" fill="url(#gLamp)"/>
-    <ellipse cx="1620" cy="210" rx="260" ry="260" fill="url(#gLamp)"/>
-    <!-- Wandleuchten -->
-    <g fill="#c99a52">
-      <rect x="292" y="196" width="16" height="44" rx="4"/>
-      <path d="M272 196 L328 196 L318 168 L282 168 Z" fill="#f5d9a0"/>
-      <rect x="1612" y="196" width="16" height="44" rx="4"/>
-      <path d="M1592 196 L1648 196 L1638 168 L1602 168 Z" fill="#f5d9a0"/>
-    </g>
-
-    <!-- Emblem: Waage -->
-    <g id="emblem" transform="translate(960 128)" fill="none" stroke="#d4a64a" stroke-width="3.2" stroke-linecap="round">
-      <circle r="40" stroke-opacity=".55"/>
-      <line x1="0" y1="-24" x2="0" y2="24"/>
-      <line x1="-22" y1="-14" x2="22" y2="-14"/>
-      <path d="M-22 -14 L-30 6 L-14 6 Z"/>
-      <path d="M22 -14 L14 6 L30 6 Z"/>
-      <line x1="-10" y1="24" x2="10" y2="24"/>
+    <polygon points="860,94 1060,94 1240,520 680,520" fill="url(#gRay)"/>
+    <ellipse cx="960" cy="290" rx="700" ry="420" fill="url(#gSpot)"/>
+    <ellipse cx="310" cy="210" rx="250" ry="250" fill="url(#gLamp)"/>
+    <ellipse cx="1610" cy="210" rx="250" ry="250" fill="url(#gLamp)"/>
+    <g>
+      <rect x="302" y="196" width="16" height="44" rx="4" fill="#b88a45"/>
+      <path d="M282 196 L338 196 L328 168 L292 168 Z" fill="#f8dfab"/>
+      <rect x="1602" y="196" width="16" height="44" rx="4" fill="#b88a45"/>
+      <path d="M1582 196 L1638 196 L1628 168 L1592 168 Z" fill="#f8dfab"/>
     </g>
 
     <!-- Richtersessel -->
-    <rect x="868" y="168" width="184" height="190" rx="34" fill="url(#gLeather)"/>
-    <rect x="884" y="184" width="152" height="160" rx="24" fill="none" stroke="#c99a52" stroke-opacity=".3" stroke-width="2"/>
+    <rect x="868" y="104" width="184" height="270" rx="44" fill="url(#gChair)"/>
+    <rect x="884" y="120" width="152" height="240" rx="32" fill="none" stroke="#e2b46a" stroke-opacity=".35" stroke-width="2"/>
 
-    <!-- Richter Prof. Lehrner (stilisiert) -->
+    <!-- ===== Prof. Lehrner – stilisierte Richterin ===== -->
     <g id="judge">
-      <path d="M836 360 C842 306 880 290 922 286 L998 286 C1040 290 1078 306 1084 360 Z" fill="#111014"/>
-      <path d="M922 286 L960 352 L998 286" fill="none" stroke="#6b3f92" stroke-width="13" stroke-linejoin="round"/>
-      <path d="M944 288 L976 288 L960 320 Z" fill="#f1efe9"/>
-      <rect x="945" y="262" width="30" height="30" fill="#d7ab86"/>
-      <ellipse cx="960" cy="228" rx="44" ry="52" fill="#e9c6a1"/>
-      <path d="M917 222 C914 250 922 266 932 272 L930 232 Z" fill="#a9a6a2"/>
-      <path d="M1003 222 C1006 250 998 266 988 272 L990 232 Z" fill="#a9a6a2"/>
-      <path d="M910 200 C916 166 1004 166 1010 200 L1014 208 C988 196 932 196 906 208 Z" fill="#0f0d10"/>
-      <g id="brows" stroke="#6d6a66" stroke-width="3.5" stroke-linecap="round">
-        <line class="brow-l" x1="932" y1="212" x2="952" y2="214"/>
-        <line class="brow-r" x1="968" y1="214" x2="988" y2="212"/>
+      <g id="j-upper">
+        <!-- Haar hinten -->
+        <path d="M903 168 C890 228 893 272 912 300 L1008 300 C1027 272 1030 228 1017 168 Z" fill="url(#gHairBack)"/>
+        <!-- Robe -->
+        <path d="M812 384 C818 318 858 290 912 280 L960 308 L1008 280 C1062 290 1102 318 1108 384 Z" fill="url(#gRobe)"/>
+        <path d="M912 280 C926 318 940 350 946 384" fill="none" stroke="#2b2342" stroke-width="16"/>
+        <path d="M1008 280 C994 318 980 350 974 384" fill="none" stroke="#2b2342" stroke-width="16"/>
+        <path d="M842 330 C860 312 880 300 900 294" fill="none" stroke="#2a2a36" stroke-width="3" opacity=".7"/>
+        <path d="M1078 330 C1060 312 1040 300 1020 294" fill="none" stroke="#2a2a36" stroke-width="3" opacity=".7"/>
+        <!-- Hals und Kragen -->
+        <path d="M942 226 L978 226 L980 280 L940 280 Z" fill="#e4b796"/>
+        <path d="M932 272 L960 312 L988 272 L978 268 L960 294 L942 268 Z" fill="#f6f3ec"/>
+        <g fill="#f4efe2"><circle cx="947" cy="281" r="2.6"/><circle cx="953" cy="287" r="2.6"/><circle cx="960" cy="289" r="2.6"/><circle cx="967" cy="287" r="2.6"/><circle cx="973" cy="281" r="2.6"/></g>
+        <g id="j-head">
+          <!-- Gesicht -->
+          <ellipse cx="960" cy="194" rx="41" ry="51" fill="url(#gSkin)"/>
+          <ellipse cx="933" cy="212" rx="9" ry="5" fill="#f0a39a" opacity=".28"/>
+          <ellipse cx="987" cy="212" rx="9" ry="5" fill="#f0a39a" opacity=".28"/>
+          <!-- Augen -->
+          <g id="j-eyes">
+            <path d="M932 196 Q943 187 954 196 Q943 202 932 196 Z" fill="#fff"/>
+            <path d="M966 196 Q977 187 988 196 Q977 202 966 196 Z" fill="#fff"/>
+            <circle cx="943" cy="195.6" r="4.4" fill="#3f6286"/><circle cx="977" cy="195.6" r="4.4" fill="#3f6286"/>
+            <circle cx="943" cy="195.6" r="2" fill="#13202f"/><circle cx="977" cy="195.6" r="2" fill="#13202f"/>
+            <circle cx="944.4" cy="194.2" r="1.2" fill="#fff"/><circle cx="978.4" cy="194.2" r="1.2" fill="#fff"/>
+            <path d="M930 195 Q943 185 956 194" fill="none" stroke="#3a2618" stroke-width="2.6" stroke-linecap="round"/>
+            <path d="M964 194 Q977 185 990 195" fill="none" stroke="#3a2618" stroke-width="2.6" stroke-linecap="round"/>
+          </g>
+          <g id="j-lids" fill="#efcdb0">
+            <path class="lid" d="M929 196 Q943 184 957 196 L957 186 L929 186 Z"/>
+            <path class="lid" d="M963 196 Q977 184 991 196 L991 186 L963 186 Z"/>
+          </g>
+          <g id="j-brows" fill="none" stroke="#b0843f" stroke-width="3.2" stroke-linecap="round">
+            <path class="brow-l" d="M931 180 Q943 174 955 178"/>
+            <path class="brow-r" d="M965 178 Q977 174 989 180"/>
+          </g>
+          <path d="M960 199 Q956 213 962 217" fill="none" stroke="#cf9f80" stroke-width="2" stroke-linecap="round"/>
+          <!-- Mund: je Zustand eine Form -->
+          <g id="j-mouth">
+            <path class="mouth m-neutral" d="M948 229 Q960 235 972 229 Q960 237 948 229 Z" fill="#b5545a"/>
+            <path class="mouth m-asking" d="M950 229 Q960 233 970 228 Q962 236 950 229 Z" fill="#b5545a"/>
+            <path class="mouth m-pleased" d="M944 226 Q960 241 976 226 Q960 236 944 226 Z" fill="#b5545a"/>
+            <path class="mouth m-stern" d="M949 232 Q960 228 971 232 Q960 234 949 232 Z" fill="#a24a50"/>
+            <path class="mouth m-verdict" d="M947 230 Q960 232 973 230 Q960 234 947 230 Z" fill="#a24a50"/>
+            <ellipse class="mouth m-talk" cx="960" cy="231" rx="8" ry="4.5" fill="#7a2f36"/>
+          </g>
+          <!-- Haar vorne: seitlich gescheitelter, eleganter Schnitt -->
+          <path d="M912 200 C902 138 952 118 988 130 C1014 140 1022 172 1012 210 C1004 178 986 160 958 156 C944 168 930 186 920 214 Z" fill="url(#gHair)"/>
+          <path d="M916 188 C904 232 908 270 926 298 C936 266 932 230 928 196 Z" fill="url(#gHair)"/>
+          <path d="M1004 180 C1018 226 1014 268 996 298 C988 266 992 228 996 192 Z" fill="url(#gHair)"/>
+          <path d="M928 170 C944 146 972 138 996 146" fill="none" stroke="#fff1c8" stroke-width="3" stroke-linecap="round" opacity=".75"/>
+          <path d="M918 220 C914 246 918 270 926 288" fill="none" stroke="#fbe6b0" stroke-width="2" opacity=".6"/>
+          <circle cx="921" cy="222" r="3.2" fill="#fbf6ea"/><circle cx="999" cy="222" r="3.2" fill="#fbf6ea"/>
+        </g>
       </g>
-      <g fill="none" stroke="#2a2420" stroke-width="3">
-        <circle cx="943" cy="230" r="13" fill="#fff" fill-opacity=".14"/>
-        <circle cx="977" cy="230" r="13" fill="#fff" fill-opacity=".14"/>
-        <line x1="956" y1="229" x2="964" y2="229"/>
+      <!-- Hände: Ruhe / fragende Geste / Urteil -->
+      <g class="j-pose pose-rest">
+        <path d="M900 352 C912 340 948 338 958 350 L956 362 C940 358 912 360 900 362 Z" fill="#090910"/>
+        <path d="M1020 352 C1008 340 972 338 962 350 L964 362 C980 358 1008 360 1020 362 Z" fill="#090910"/>
+        <ellipse cx="946" cy="356" rx="18" ry="9" fill="#efc9aa"/><ellipse cx="974" cy="356" rx="18" ry="9" fill="#e9c0a0"/>
       </g>
-      <g id="eyes" fill="#2a1a10">
-        <circle cx="943" cy="231" r="3.4"/>
-        <circle cx="977" cy="231" r="3.4"/>
+      <g class="j-pose pose-ask">
+        <path d="M1020 352 C1008 340 972 338 962 350 L964 362 C980 358 1008 360 1020 362 Z" fill="#090910"/>
+        <ellipse cx="974" cy="356" rx="18" ry="9" fill="#e9c0a0"/>
+        <path d="M858 372 C852 340 862 312 884 300 L904 310 C890 326 884 348 888 372 Z" fill="#0d0d14"/>
+        <path d="M880 302 C874 290 876 270 884 262 C888 258 892 262 891 268 L890 280 L896 262 C898 256 905 258 904 265 L900 284 L906 270 C908 264 914 266 913 272 L906 300 C900 310 886 312 880 302 Z" fill="#efc9aa"/>
       </g>
-      <ellipse id="mouth" cx="960" cy="259" rx="11" ry="2.6" fill="#8a4a3a"/>
+      <g class="j-pose pose-verdict">
+        <path d="M904 330 L1016 330 L1022 372 L898 372 Z" fill="#f5edda"/>
+        <g stroke="#9a8a6a" stroke-width="2"><line x1="918" y1="342" x2="1002" y2="342"/><line x1="916" y1="352" x2="1004" y2="352"/><line x1="914" y1="362" x2="980" y2="362"/></g>
+        <ellipse cx="904" cy="352" rx="13" ry="16" fill="#efc9aa"/><ellipse cx="1016" cy="352" rx="13" ry="16" fill="#e9c0a0"/>
+      </g>
     </g>
 
     <!-- Richterbank -->
-    <rect x="532" y="330" width="856" height="28" rx="4" fill="url(#gLedge)"/>
-    <rect x="552" y="358" width="816" height="170" fill="url(#gWood)"/>
-    <g fill="none" stroke="#2a170a" stroke-width="4">
-      <rect x="576" y="380" width="230" height="124"/>
-      <rect x="1114" y="380" width="230" height="124"/>
+    <rect x="520" y="364" width="880" height="26" rx="4" fill="url(#gLedge)"/>
+    <rect x="520" y="364" width="880" height="3" fill="#e2b46a" opacity=".5"/>
+    <rect x="540" y="390" width="840" height="140" fill="url(#gWood)"/>
+    <g fill="none" stroke="#1c0907" stroke-width="4">
+      <rect x="566" y="408" width="236" height="104"/>
+      <rect x="1118" y="408" width="236" height="104"/>
     </g>
-    <g fill="none" stroke="#c99a52" stroke-opacity=".25" stroke-width="2">
-      <rect x="582" y="386" width="218" height="112"/>
-      <rect x="1120" y="386" width="218" height="112"/>
+    <g fill="none" stroke="#e2b46a" stroke-opacity=".3" stroke-width="2">
+      <rect x="572" y="414" width="224" height="92"/>
+      <rect x="1124" y="414" width="224" height="92"/>
     </g>
-    <!-- Akten und Gesetzbuch auf der Richterbank -->
-    <rect x="690" y="314" width="120" height="16" rx="2" fill="#e8dcc0"/>
-    <rect x="696" y="302" width="112" height="13" rx="2" fill="#d9c9a5"/>
-    <rect x="1108" y="300" width="104" height="30" rx="3" fill="#6b1e1e"/>
-    <rect x="1108" y="300" width="10" height="30" fill="#4a1414"/>
-    <text x="1166" y="322" text-anchor="middle" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#e2b75e">ZPO</text>
+    <!-- Waage am Richtertisch -->
+    <g transform="translate(960 494)" fill="none" stroke="#e2b46a" stroke-width="2.6" stroke-linecap="round" opacity=".9">
+      <line x1="0" y1="-18" x2="0" y2="16"/><line x1="-18" y1="-10" x2="18" y2="-10"/>
+      <path d="M-18 -10 L-24 4 L-12 4 Z"/><path d="M18 -10 L12 4 L24 4 Z"/><line x1="-8" y1="16" x2="8" y2="16"/>
+    </g>
+    <!-- Akten und Gesetzbuch -->
+    <rect x="676" y="348" width="124" height="16" rx="2" fill="#efe4c8"/>
+    <rect x="682" y="336" width="114" height="13" rx="2" fill="#ddcca6"/>
+    <rect x="1112" y="334" width="106" height="30" rx="3" fill="#1d2f55"/>
+    <rect x="1112" y="334" width="10" height="30" fill="#132240"/>
+    <text x="1170" y="356" text-anchor="middle" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#e9c47a">ZPO</text>
 
     <!-- Tisch links: Kanzlei 5BHEL -->
     <use href="#silhouette" x="190" y="300" width="160" height="150"/>
@@ -170,7 +264,7 @@
   <!-- Namensschilder -->
   <div id="plate-judge" class="plate">
     <span class="plate-name">PROF. LEHRNER</span>
-    <span class="plate-sub">Richter</span>
+    <span class="plate-sub">Richterin</span>
   </div>
   <div id="plate-left" class="plate plate-desk">
     <span class="plate-name">5BHEL</span>
@@ -189,7 +283,7 @@
 
   <!-- HUD -->
   <header id="hud">
-    <div id="hud-brand">5BHEL <span>VOR GERICHT</span></div>
+    <div id="hud-left"><div id="hud-brand">5BHEL <span>VOR GERICHT</span></div><div id="hud-live"><span class="hud-live-dot"></span><span id="hud-live-text">Live</span></div></div>
     <div id="hud-case">
       <div id="hud-case-label">Eröffnung</div>
       <div id="hud-dots"></div>
@@ -209,7 +303,7 @@
 
   <!-- Dialog des Richters -->
   <section id="dialog">
-    <div id="dialog-speaker">PROF. LEHRNER <span>· Richter</span></div>
+    <div id="dialog-speaker">PROF. LEHRNER <span>· Richterin</span></div>
     <div id="dialog-body" class="fit">
       <p id="say-text"></p>
       <p id="say-sub"></p>
@@ -219,6 +313,11 @@
     <button id="btn-timer" class="btn-timer" type="button">
       <span id="timer-label">&#x23F1; Beratung 30 s</span>
     </button>
+    <div id="live-vote" aria-live="polite">
+      <svg class="lv-ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" class="lv-track"/><circle id="lv-ring" cx="50" cy="50" r="44" class="lv-prog"/></svg>
+      <div id="lv-sec">30</div>
+      <div class="lv-info"><div id="lv-label">JETZT AM HANDY ABSTIMMEN</div><div id="lv-count">0 / 0 Stimmen</div></div>
+    </div>
   </section>
 
   <!-- Unterer Bereich: Spielregeln / Akt / Antworten / Begründung -->
@@ -286,7 +385,7 @@
       <div class="verdict-label">Spruch</div>
       <h2 id="final-title" class="verdict-title"></h2>
       <p id="final-text" class="verdict-text fit"></p>
-      <div class="verdict-close">Die Verhandlung ist geschlossen. &nbsp;— Prof. Lehrner, Richter</div>
+      <div class="verdict-close">Die Verhandlung ist geschlossen. &nbsp;— Prof. Lehrner, Richterin</div>
       <button id="btn-restart" class="btn-primary btn-xl" type="button">ERNEUT SPIELEN</button>
     </div>
     <div class="takeaway-card">
@@ -295,27 +394,145 @@
     </div>
   </div>
 
-  <!-- Moderator-Modus -->
-  <button id="mod-toggle" type="button" title="Moderator-Modus (Taste M)">&#x2699;</button>
-  <div id="mod-panel" role="dialog" aria-label="Moderator">
-    <div class="mod-head">Moderator <button id="mod-close" type="button" title="Schließen">&#x2715;</button></div>
-    <button id="mod-next" type="button">&#x25B8; Nächste Szene</button>
-    <button id="mod-timer" type="button">&#x23F1; Timer: AN</button>
-    <div class="mod-row">
-      <button type="button" data-jump="opening">Eröffn.</button>
-      <button type="button" data-jump="0">Fall 1</button>
-      <button type="button" data-jump="1">Fall 2</button>
-      <button type="button" data-jump="2">Fall 3</button>
-      <button type="button" data-jump="final">Urteil</button>
+  <!-- Beitritt für Schüler (nur mit Live-Raum) -->
+  <div id="join-card">
+    <div class="jc-kicker">MITMACHEN</div>
+    <img id="join-qr" alt="QR-Code zum Abstimmen" width="300" height="300">
+    <div class="jc-steps">Handy-Kamera auf den QR-Code richten<br>oder <b id="join-url">…/abstimmen.html</b> öffnen</div>
+    <div class="jc-code-label">Raumcode</div>
+    <div id="join-code" class="jc-code">––––––</div>
+  </div>
+
+  <!-- Ergebnisphase der Abstimmung -->
+  <div id="vote-result" aria-live="polite">
+    <div class="vr-inner">
+      <div id="vr-kicker" class="vr-kicker">DIE KLASSE HAT ENTSCHIEDEN</div>
+      <div id="vr-total" class="vr-total"></div>
+      <div class="vr-rows">
+        <div id="vr-row-0" class="vr-row"><span class="vr-letter">A</span><div class="vr-main"><div class="vr-text"></div><div class="vr-track"><div class="vr-fill"></div></div></div><span class="vr-num"></span></div>
+        <div id="vr-row-1" class="vr-row"><span class="vr-letter">B</span><div class="vr-main"><div class="vr-text"></div><div class="vr-track"><div class="vr-fill"></div></div></div><span class="vr-num"></span></div>
+        <div id="vr-row-2" class="vr-row"><span class="vr-letter">C</span><div class="vr-main"><div class="vr-text"></div><div class="vr-track"><div class="vr-fill"></div></div></div><span class="vr-num"></span></div>
+      </div>
+      <div id="vr-verdict" class="vr-verdict"></div>
+      <div id="vr-actions" class="vr-actions"></div>
+      <div id="vr-hint" class="vr-hint"></div>
     </div>
-    <button id="mod-fs" type="button">&#x26F6; Vollbild ein/aus</button>
-    <button id="mod-reset" type="button" class="mod-danger">&#x21BA; Spiel zurücksetzen</button>
-    <div class="mod-hint">M: Moderator · Enter/&#x2192;: Weiter · F11: Vollbild</div>
+  </div>
+
+  <!-- Filmische Fall-Einführung -->
+  <div id="cinema" aria-hidden="true">
+    <div id="cinema-film"></div>
+    <div class="cinema-bar top"></div><div class="cinema-bar bottom"></div>
+    <div id="cinema-caption"></div>
+    <div id="cinema-progress"><div id="cinema-progress-fill"></div></div>
+    <button id="cinema-skip" type="button">Überspringen &#x25B8;&#x25B8;</button>
   </div>
 </div>
 
+<!-- ===== Spielleitung (nur Admin, ein-/ausblendbar) ===== -->
+<button id="admin-toggle" type="button" title="Spielleitung öffnen (Taste M)" aria-controls="admin-panel" aria-expanded="false">
+  <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7zm7.4-2.5c.04-.33.06-.66.06-1s-.02-.67-.06-1l2.1-1.65a.5.5 0 0 0 .12-.64l-2-3.46a.5.5 0 0 0-.6-.22l-2.48 1a7.3 7.3 0 0 0-1.73-1l-.38-2.65A.5.5 0 0 0 14 2h-4a.5.5 0 0 0-.5.42l-.37 2.65c-.63.26-1.2.6-1.73 1l-2.49-1a.5.5 0 0 0-.6.22l-2 3.46a.5.5 0 0 0 .12.64L4.6 11c-.04.33-.07.66-.07 1s.03.67.07 1l-2.11 1.65a.5.5 0 0 0-.12.64l2 3.46c.13.22.39.3.6.22l2.49-1c.52.4 1.1.74 1.73 1l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.2-.6 1.73-1l2.49 1c.22.08.47 0 .6-.22l2-3.46a.5.5 0 0 0-.12-.64L19.4 13z"/></svg>
+</button>
+<div id="admin-backdrop"></div>
+<aside id="admin-panel" role="dialog" aria-label="Spielleitung" aria-hidden="true">
+  <div class="ap-head">
+    <div><div class="ap-kicker">5BHEL VOR GERICHT</div><div class="ap-title">Spielleitung</div></div>
+    <button id="mod-close" type="button" class="ap-x" title="Schließen (Esc)">&#x2715;</button>
+  </div>
+  <div class="ap-scroll">
+    <section class="ap-sec">
+      <h3>Spielablauf</h3>
+      <button id="mod-next" type="button" class="ap-btn ap-main">&#x25B8; Nächste Szene / Abstimmung beenden</button>
+      <div class="ap-row ap-jumps">
+        <button type="button" data-jump="opening">Eröffn.</button>
+        <button type="button" data-jump="0">Fall 1</button>
+        <button type="button" data-jump="1">Fall 2</button>
+        <button type="button" data-jump="2">Fall 3</button>
+        <button type="button" data-jump="final">Urteil</button>
+      </div>
+      <div class="ap-row">
+        <button id="ap-cinema" type="button" class="ap-btn">&#x1F3AC; Fall-Intros: AN</button>
+        <button id="mod-timer" type="button" class="ap-btn ap-offline-only">&#x23F1; Timer: AN</button>
+      </div>
+    </section>
+
+    <section class="ap-sec">
+      <h3>Ansicht</h3>
+      <div class="ap-row">
+        <button id="ap-present" type="button" class="ap-btn ap-main">&#x1F4FD; Präsentationsmodus</button>
+        <button id="mod-fs" type="button" class="ap-btn">&#x26F6; Vollbild</button>
+      </div>
+    </section>
+
+    <section class="ap-sec ap-live-only">
+      <h3>Live-Abstimmung <span id="ap-conn" class="ap-conn"></span></h3>
+      <div class="ap-noroom">
+        <p class="ap-note">Erstelle einen Raum, damit die Klasse per Handy abstimmt.</p>
+        <button id="ap-create" type="button" class="ap-btn ap-main">Raum erstellen</button>
+      </div>
+      <div class="ap-hasroom">
+        <div class="ap-roominfo">
+          <img id="ap-qr" alt="QR-Code" width="96" height="96">
+          <div>
+            <div class="ap-code-label">Raumcode</div>
+            <div id="ap-code" class="ap-code">––––––</div>
+            <a id="ap-link" target="_blank" rel="noopener" href="#">Link</a>
+          </div>
+        </div>
+        <div class="ap-row">
+          <button id="ap-copy" type="button" class="ap-btn">&#x1F517; Link kopieren</button>
+          <label class="ap-check"><input id="ap-joincard" type="checkbox"> QR auf Beamer</label>
+        </div>
+        <div id="ap-people" class="ap-metric">0 verbunden</div>
+        <div id="ap-score" class="ap-metric"></div>
+        <div id="ap-vote" class="ap-vote">Keine Abstimmung aktiv.</div>
+        <div class="ap-row">
+          <button id="ap-close" type="button" class="ap-btn ap-main" disabled>Abstimmung jetzt beenden</button>
+          <button id="ap-extend" type="button" class="ap-btn" disabled>+15 s <span id="ap-timeleft"></span></button>
+        </div>
+      </div>
+      <div class="ap-row">
+        <label class="ap-label">Abstimmungsdauer
+          <select id="ap-duration"><option value="20">20 s</option><option value="30" selected>30 s</option><option value="45">45 s</option><option value="60">60 s</option><option value="90">90 s</option></select>
+        </label>
+        <label class="ap-check ap-hasroom-inline"><input id="ap-showdist" type="checkbox"> Live-Verteilung zeigen</label>
+      </div>
+      <div id="ap-dist" class="ap-dist" hidden>
+        <div><b>A</b><span class="ap-track"><span id="ap-bar-0"></span></span><span id="ap-cnt-0">0</span></div>
+        <div><b>B</b><span class="ap-track"><span id="ap-bar-1"></span></span><span id="ap-cnt-1">0</span></div>
+        <div><b>C</b><span class="ap-track"><span id="ap-bar-2"></span></span><span id="ap-cnt-2">0</span></div>
+      </div>
+    </section>
+
+    <section class="ap-sec ap-live-only ap-hasroom">
+      <h3>Frau Prof · Beobachterzugang</h3>
+      <p class="ap-note">Privater, schreibgeschützter Link. Ein neuer Link macht den alten ungültig.</p>
+      <button id="ap-obs-create" type="button" class="ap-btn">Beobachter-Link erzeugen</button>
+      <div id="ap-obs" hidden>
+        <input id="ap-obs-link" type="text" readonly aria-label="Beobachter-Link">
+        <div class="ap-row">
+          <button id="ap-obs-copy" type="button" class="ap-btn">Kopieren</button>
+          <button id="ap-obs-revoke" type="button" class="ap-btn ap-danger">Zugang widerrufen</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="ap-sec">
+      <h3>Zurücksetzen</h3>
+      <button id="mod-reset" type="button" class="ap-btn ap-danger">&#x21BA; Spiel zurücksetzen</button>
+      <div class="ap-row ap-live-only">
+        <button id="ap-endroom" type="button" class="ap-btn ap-danger ap-hasroom">Raum schließen</button>
+        <button id="ap-logout" type="button" class="ap-btn">Abmelden</button>
+      </div>
+    </section>
+    <div id="ap-status" class="ap-status" role="status"></div>
+    <div class="ap-hint">M: Spielleitung · Esc: schließen · Enter/&#x2192;: weiter · F11: Vollbild</div>
+  </div>
+</aside>
+
 <script src="js/cases.js"></script>
 <script src="js/game.js"></script>
+<script src="js/cinema.js"></script>
 <script src="js/live-host.js"></script>
 </body>
 </html>

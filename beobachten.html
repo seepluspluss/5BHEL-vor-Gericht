@@ -1,5 +1,132 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Frau Prof · Live-Übersicht · 5BHEL</title><style>
-:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100vh;color:#f4eddf;background:radial-gradient(ellipse at 15% 0%,#3e3140 0,transparent 38%),linear-gradient(145deg,#101b2a,#1a2638 65%,#101725);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}main{max-width:1050px;margin:auto;padding:30px 20px 70px}header{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding-bottom:22px;border-bottom:1px solid #bda06b55}.eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#d8b77b;font-weight:700}h1{font:700 clamp(30px,5vw,55px)/1.1 Georgia,serif;margin:8px 0}h2{font:700 24px Georgia,serif;margin:0 0 12px}.pill{border:1px solid #bda06b66;background:#e0b96a18;border-radius:50px;padding:9px 16px;color:#efd69d}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:25px 0}.panel{background:#233247c9;border:1px solid #bda06b42;border-radius:18px;padding:24px;box-shadow:0 14px 45px #0002}.metric{font-size:40px;font-weight:800;color:#f3d391}.muted{color:#b7c4d1}.question{margin:25px 0}.bar-row{display:grid;grid-template-columns:36px 1fr 55px;gap:12px;align-items:center;margin:20px 0}.letter{font-weight:900;color:#eac788;font-size:22px}.track{height:22px;background:#111b2a;border-radius:30px;overflow:hidden}.fill{height:100%;width:0%;border-radius:30px;background:linear-gradient(90deg,#ae8343,#f5d89a);transition:width .35s}.count{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}.result{margin-top:18px;padding:15px;border-radius:12px;background:#e9bd6a16;border:1px solid #e9bd6a44;font-weight:700;color:#f1d99f}.note{margin-top:25px;color:#bac5d2;font-size:14px}.hidden{display:none}@media(max-width:650px){.grid{grid-template-columns:1fr}.metric{font-size:30px}main{padding:20px 14px}}
-</style></head><body><main><header><div><div class="eyebrow">⚖ 5BHEL VOR GERICHT · LEHRKRAFT</div><h1>Live-Übersicht</h1><div class="muted">Nur beobachten · keine Steuerung der Verhandlung</div></div><div class="pill" id="connection">● Verbinde …</div></header><div class="grid"><section class="panel"><div class="muted">Aktueller Fall</div><div class="metric" id="case">–</div></section><section class="panel"><div class="muted">Teilnehmende</div><div class="metric" id="people">0</div></section><section class="panel"><div class="muted">Abgegebene Stimmen</div><div class="metric" id="votes">0</div></section></div><section class="panel question"><div class="eyebrow">Aktuelle Verhandlung</div><h2 id="question">Warte auf die erste Frage …</h2><p class="muted" id="state">Die Spielleitung eröffnet die Abstimmung.</p></section><section class="panel"><h2>Stimmenverteilung</h2><div class="bar-row"><div class="letter">A</div><div class="track"><div class="fill" id="a"></div></div><div class="count" id="ca">0</div></div><div class="bar-row"><div class="letter">B</div><div class="track"><div class="fill" id="b"></div></div><div class="count" id="cb">0</div></div><div class="bar-row"><div class="letter">C</div><div class="track"><div class="fill" id="c"></div></div><div class="count" id="cc">0</div></div><div class="result" id="result">Noch keine Mehrheitsentscheidung.</div></section><p class="note">Dieser Zugang ist zeitlich begrenzt und kann jederzeit von der Spielleitung widerrufen werden. Bitte den privaten Link nicht weitergeben.</p></main><script>
-'use strict';const token=new URLSearchParams(location.search).get('token')||'';const $=id=>document.getElementById(id);async function refresh(){if(!token){$('connection').textContent='Kein Zugangscode';return}try{const r=await fetch('/api/observer-state?token='+encodeURIComponent(token),{cache:'no-store'});const j=await r.json();if(!r.ok)throw Error(j.error||'Zugang verweigert');const s=j.room;const total=s.counts.reduce((a,b)=>a+b,0);$('connection').textContent='● '+(s.closed?'Beendet':s.open?'Abstimmung läuft':'Verbunden');$('case').textContent=s.question?'Fall '+(s.question.case+1):'–';$('people').textContent=s.participants;$('votes').textContent=total;$('question').textContent=s.question?'Fall '+(s.question.case+1)+' · Frage '+(s.question.question+1):'Warte auf die erste Frage …';$('state').textContent=s.closed?'Verhandlung abgeschlossen':s.open?'Die Klasse stimmt gerade ab.':'Momentan keine offene Abstimmung.';['a','b','c'].forEach((letter,i)=>{$(letter).style.width=(total?100*s.counts[i]/total:0)+'%';$('c'+letter).textContent=s.counts[i]});$('result').textContent=s.winner===null?'Noch keine Mehrheitsentscheidung.':'Mehrheitsantwort: '+ 'ABC'[s.winner];}catch(e){$('connection').textContent='● Zugang nicht verfügbar';$('state').textContent=e.message;$('result').textContent='Bitte bei der Spielleitung einen neuen Beobachter-Link anfordern.'}}refresh();setInterval(refresh,1500);
-</script></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Frau Prof · Live-Übersicht · 5BHEL</title>
+<link rel="stylesheet" href="css/live.css">
+</head>
+<body class="observer">
+<main>
+  <div class="brand">
+    <div>
+      <div class="brand-title">5BHEL <span>VOR GERICHT · LEHRKRAFT</span></div>
+      <div class="muted" style="font-size:13px">Nur beobachten – keine Steuerung möglich</div>
+    </div>
+    <span id="conn" class="pill">● Verbinde …</span>
+  </div>
+
+  <div class="grid">
+    <div class="metric"><div class="v" id="m-case">–</div><div class="l">Aktueller Fall</div></div>
+    <div class="metric"><div class="v" id="m-people">0</div><div class="l">Teilnehmende verbunden</div></div>
+    <div class="metric"><div class="v" id="m-votes">0</div><div class="l">Abgegebene Stimmen</div></div>
+    <div class="metric"><div class="v" id="m-score">0</div><div class="l">Punkte der Klasse (von 1.200)</div></div>
+  </div>
+
+  <section class="card">
+    <div class="kicker" id="q-kicker">Aktuelle Frage</div>
+    <h2 id="q-topic">Warte auf die erste Frage …</h2>
+    <div class="q-ask" id="q-ask"></div>
+    <ol class="answers-list" id="q-answers"></ol>
+  </section>
+
+  <section class="card">
+    <div class="kicker">Abstimmung</div>
+    <h2 id="v-status">Momentan keine offene Abstimmung.</h2>
+    <div class="timer hidden" id="v-timer"><div class="timer-bar"><span id="v-timer-bar"></span></div><div class="timer-sec" id="v-sec"></div></div>
+    <div class="bars" id="v-bars"></div>
+    <div class="verdict hidden" id="v-verdict"></div>
+  </section>
+
+  <section class="card">
+    <div class="kicker">Fortschritt</div>
+    <div class="dots" id="dots"></div>
+    <p class="muted" id="progress" style="margin:10px 0 0"></p>
+  </section>
+  <p class="muted" style="font-size:13px;margin-top:18px">Dieser Zugang ist privat, zeitlich begrenzt und kann von der Spielleitung jederzeit widerrufen werden. Bitte nicht weitergeben.</p>
+</main>
+<script>
+(function () {
+  'use strict';
+  var L = ['A', 'B', 'C'], $ = function (id) { return document.getElementById(id); };
+  var token = new URLSearchParams(location.search).get('token') || '';
+  var last = null, deadline = 0;
+  function reason(r) { return r === 'timer' ? 'Zeit abgelaufen' : r === 'all' ? 'alle haben abgestimmt' : 'durch die Spielleitung beendet'; }
+  function refresh() {
+    if (!token) { $('conn').textContent = 'Kein Zugangsschlüssel'; $('conn').className = 'pill bad'; return; }
+    fetch('/api/observer-state?token=' + encodeURIComponent(token), { cache: 'no-store' })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw Error(j.error || 'Zugang verweigert'); return j.room; }); })
+      .then(render)
+      .catch(function (e) {
+        $('conn').textContent = '● ' + e.message; $('conn').className = 'pill bad';
+        $('v-status').textContent = 'Kein Zugriff. Bitte bei der Spielleitung einen neuen Link anfordern.';
+      });
+  }
+  function render(s) {
+    last = s;
+    var v = s.vote, sc = s.scene || {}, t = s.caseTitles || [];
+    $('conn').textContent = s.closed ? '● Verhandlung beendet' : v && v.phase === 'voting' ? '● Abstimmung läuft' : '● verbunden';
+    $('conn').className = 'pill ok';
+    var c = v ? v.c : sc.c;
+    $('m-case').textContent = c != null ? 'Fall ' + (c + 1) : '–';
+    $('m-people').textContent = s.participants + (s.joined !== s.participants ? ' / ' + s.joined : '');
+    $('m-votes').textContent = v ? v.voted + (v.phase === 'voting' && v.required != null ? ' / ' + v.required : '') : 0;
+    $('m-score').textContent = s.score;
+    if (s.question) {
+      $('q-kicker').textContent = 'Fall ' + (s.question.c + 1) + ' · ' + s.question.caseTitle + ' · Frage ' + (s.question.q + 1);
+      $('q-topic').textContent = s.question.topic;
+      $('q-ask').textContent = s.question.ask;
+      var ol = $('q-answers'); ol.replaceChildren();
+      s.question.answers.forEach(function (a, i) { var li = document.createElement('li'); var b = document.createElement('b'); b.textContent = L[i]; li.append(b, document.createTextNode(a)); ol.append(li); });
+    } else {
+      $('q-kicker').textContent = sc.c != null ? 'Fall ' + (sc.c + 1) + ' · ' + (t[sc.c] || '') : 'Aktuelle Frage';
+      $('q-topic').textContent = sc.name === 'final' ? 'Urteilsverkündung' : 'Warte auf die erste Frage …';
+    }
+    var bars = $('v-bars'); bars.replaceChildren();
+    $('v-timer').classList.toggle('hidden', !(v && v.phase === 'voting'));
+    var vd = $('v-verdict'); vd.className = 'verdict hidden';
+    if (!v) { $('v-status').textContent = 'Momentan keine offene Abstimmung.'; }
+    else {
+      deadline = Date.now() + v.remainingMs;
+      $('v-status').textContent = v.phase === 'voting' ? (v.round > 1 ? 'Stichwahl läuft' : 'Die Klasse stimmt gerade ab') : 'Abstimmung beendet – ' + reason(v.closeReason);
+      var d = s.decision;
+      (v.counts || [0, 0, 0]).forEach(function (n, i) {
+        if (v.options.indexOf(i) < 0) return;
+        var row = document.createElement('div');
+        var win = v.phase !== 'voting' && (d ? d.chosen === i : v.winner === i);
+        row.className = 'bar-row' + (win ? ' win' : '');
+        row.innerHTML = '<b></b><div class="bar-track"><div class="bar-fill" style="transition:none"></div></div><span class="bar-num"></span>';
+        row.querySelector('b').textContent = L[i];
+        row.querySelector('.bar-fill').style.width = (v.percents ? v.percents[i] : 0) + '%';
+        row.querySelector('.bar-num').textContent = n + ' · ' + (v.percents ? v.percents[i] : 0) + ' %';
+        bars.append(row);
+      });
+      if (v.phase !== 'voting') {
+        vd.className = 'verdict';
+        if (d && d.method === 'skipped') vd.textContent = 'Frage übersprungen (0 Punkte)';
+        else if (d) vd.textContent = (d.method === 'admin' ? 'Entscheidung der Spielleitung (Gleichstand): ' : 'Mehrheitsentscheidung: ') + L[d.chosen] + (d.revealed ? (d.ok ? ' · richtig' : ' · falsch, richtig ist ' + L[d.correct]) : '');
+        else if (v.outcome === 'tie') { vd.textContent = 'Gleichstand ' + v.tied.map(function (i) { return L[i]; }).join(' / ') + ' – Spielleitung entscheidet'; vd.classList.add('tie'); }
+        else { vd.textContent = 'Keine Stimmen abgegeben'; vd.classList.add('tie'); }
+      }
+    }
+    var dots = $('dots'); dots.replaceChildren();
+    s.results.forEach(function (r, g) {
+      if (g && g % 4 === 0) { var gap = document.createElement('span'); gap.className = 'gap'; dots.append(gap); }
+      var sp = document.createElement('span');
+      if (r) sp.className = r.method === 'skipped' ? 'skip' : r.ok === null ? 'pending' : r.ok ? 'ok' : 'bad';
+      dots.append(sp);
+    });
+    $('progress').textContent = s.decided + ' von 12 Entscheidungen getroffen · ' + s.score + ' Punkte freigegeben';
+  }
+  setInterval(function () {
+    if (!last || !last.vote || last.vote.phase !== 'voting') return;
+    var left = Math.max(0, deadline - Date.now());
+    $('v-sec').textContent = Math.ceil(left / 1000) + ' s';
+    $('v-timer-bar').style.width = (100 * left / (last.vote.duration * 1000)) + '%';
+  }, 250);
+  refresh(); setInterval(refresh, 1000);
+})();
+</script>
+</body>
+</html>

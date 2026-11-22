@@ -41,9 +41,13 @@
   }
 
   // ---------- Skalierung auf das Fenster (16:9, Letterbox) ----------
+  var PANEL_W = 400, DOCK_MIN = 1280; // ab dieser Breite schiebt die Seitenleiste den Saal zur Seite statt ihn zu verdecken
   function fit() {
-    var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
-    var x = (window.innerWidth - 1920 * s) / 2, y = (window.innerHeight - 1080 * s) / 2;
+    var docked = document.body.classList.contains('admin-open') && window.innerWidth >= DOCK_MIN;
+    document.body.classList.toggle('admin-docked', docked);
+    var w = window.innerWidth - (docked ? PANEL_W : 0);
+    var s = Math.min(w / 1920, window.innerHeight / 1080);
+    var x = (w - 1920 * s) / 2, y = (window.innerHeight - 1080 * s) / 2;
     stage.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
   }
   window.addEventListener('resize', fit);
@@ -52,12 +56,14 @@
   var MODES = ['mode-title', 'mode-opening', 'mode-intro', 'mode-question', 'mode-explain', 'mode-summary', 'mode-final'];
   function setMode(m) {
     if (m !== 'question' && m !== 'explain') $('hearing-cue').classList.remove('active');
+    if (st.scene !== 'cinema' && window.__cinema) window.__cinema.stop();
     MODES.forEach(function (x) { stage.classList.remove(x); });
     stage.classList.add('mode-' + m);
     stage.classList.toggle('timer-on', timerEnabled);
   }
+  // Stimmungen der Richterin: neutral, asking (fragend), pleased (zufrieden), stern (streng), verdict (Urteil)
   function setMood(m) {
-    stage.classList.remove('judge-stern', 'judge-pleased');
+    stage.classList.remove('judge-stern', 'judge-pleased', 'judge-asking', 'judge-verdict');
     if (m) stage.classList.add('judge-' + m);
   }
   function animate(node) {
@@ -114,6 +120,7 @@
       html += '</span>';
     }
     el.hudDots.innerHTML = html;
+    window.dispatchEvent(new CustomEvent('game-scene', { detail: { name: st.scene, c: st.scene === 'title' || st.scene === 'opening' || st.scene === 'final' ? null : st.c, q: st.scene === 'question' || st.scene === 'explain' ? st.q : null } }));
   }
   function popGain(text) {
     el.hudGain.textContent = text;
@@ -158,8 +165,17 @@
     say(D.opening[st.line]);
   }
 
-  function showIntro(ci, line) {
+  var cinemaEnabled = true;
+  function showIntro(ci, line, opts) {
     stopTimer();
+    if (!line && !(opts && opts.noCinema) && cinemaEnabled && !INSTANT && window.__cinema) {
+      st.scene = 'cinema'; st.c = ci; st.q = 0; st.line = 0;
+      stage.classList.remove('show-banner');
+      renderParties(); setMode('intro'); renderHud();
+      window.__cinema.play(ci, function () { if (st.scene === 'cinema' && st.c === ci) showIntro(ci, 0, { noCinema: true }); });
+      return;
+    }
+    if (window.__cinema) window.__cinema.stop();
     st.scene = 'intro'; st.c = ci; st.q = 0; st.line = line || 0;
     renderParties(); setMood(null);
     $('case-banner-kicker').textContent = 'FALL ' + (ci + 1) + ' · ' + curCase().difficulty.toUpperCase();
@@ -177,14 +193,17 @@
     $('hearing-phase').textContent = outcome ? 'REAKTION IM SAAL' : item.phase;
     $('hearing-voice').textContent = outcome ? 'Prof. Lehrner' : item.voice;
     $('hearing-line').textContent = outcome === 'right' ? item.right : outcome === 'wrong' ? item.wrong : item.line;
+    // Sprechblase über dem Tisch der sprechenden Seite: Mandant links (5BHEL), alle anderen rechts
+    cue.classList.toggle('side-right', !!outcome || item.voice !== D.cases[ci].client);
     cue.classList.add('active');
     cue.classList.remove('cue-pulse'); void cue.offsetWidth; cue.classList.add('cue-pulse');
   }
 
   function showQuestion(ci, qi) {
     stopTimer();
+    if (window.__cinema) window.__cinema.stop();
     st.scene = 'question'; st.c = ci; st.q = qi;
-    renderParties(); setMood(null);
+    renderParties(); setMood('asking');
     stage.classList.remove('show-banner');
     var q = curQ();
     setHearing(ci, qi);
@@ -210,6 +229,27 @@
     showExplain();
   }
 
+  // Live-Modus: verbindliche Entscheidung des Servers übernehmen (Punkte kommen vom Server)
+  function applyDecision(d) {
+    if (st.scene !== 'question' || st.c !== d.c || st.q !== d.q) showQuestion(d.c, d.q);
+    finishTyping();
+    var skipped = d.method === 'skipped' || d.chosen < 0;
+    st.results[d.c][d.q] = { chosen: d.chosen, ok: !skipped && !!d.ok, skipped: skipped, live: true, method: d.method };
+    var before = st.score;
+    st.score = typeof d.score === 'number' ? d.score : st.score + (d.ok ? PER_Q : 0);
+    if (st.score > before) popGain('+' + (st.score - before));
+    showExplain();
+  }
+  function restore(results, score) {
+    if (!results) return;
+    for (var g = 0; g < results.length; g++) {
+      var r = results[g], ci = Math.floor(g / Q_PER_CASE), qi = g % Q_PER_CASE;
+      if (r && r.revealed && st.results[ci]) st.results[ci][qi] = { chosen: r.chosen, ok: !!r.ok, skipped: r.method === 'skipped', live: true, method: r.method };
+    }
+    if (typeof score === 'number') st.score = score;
+    renderHud();
+  }
+
   function skipQuestion() {
     if (st.scene !== 'question') return;
     st.results[st.c][st.q] = { chosen: -1, ok: false, skipped: true };
@@ -226,13 +266,13 @@
       reaction = D.reactions.skipped; sub = right;
       el.stamp.className = ''; setMood(null);
     } else if (r.ok) {
-      reaction = D.reactions.right[g % D.reactions.right.length];
-      sub = 'Ihre Antwort ' + right;
+      reaction = r.live ? D.reactions.liveRight : D.reactions.right[g % D.reactions.right.length];
+      sub = (r.live ? (r.method === 'admin' ? 'Entscheidung bei Gleichstand: ' : 'Mehrheitsentscheidung: ') : 'Ihre Antwort ') + right;
       el.stamp.textContent = '✓ RICHTIG · +' + PER_Q; el.stamp.className = 'ok'; setMood('pleased');
     } else {
-      reaction = D.reactions.wrong[g % D.reactions.wrong.length];
+      reaction = r.live ? D.reactions.liveWrong : D.reactions.wrong[g % D.reactions.wrong.length];
       sub = 'Richtig ist ' + right;
-      el.stamp.textContent = '✗ FALSCH (' + LETTERS[r.chosen] + ') · 0'; el.stamp.className = 'bad'; setMood('stern');
+      el.stamp.textContent = '✗ ' + (r.live ? 'MEHRHEIT ' : 'FALSCH (') + LETTERS[r.chosen] + (r.live ? '' : ')') + ' · 0'; el.stamp.className = 'bad'; setMood('stern');
     }
     setHearing(st.c, st.q, r.skipped ? 'wrong' : (r.ok ? 'right' : 'wrong'));
     el.explain.textContent = q.explanation;
@@ -264,7 +304,7 @@
     var oi = pts >= 300 ? 0 : (pts >= 200 ? 1 : 2);
     $('sum-outcome').textContent = cs.outcomes[oi];
     $('btn-case-next').textContent = ci < D.cases.length - 1 ? 'NÄCHSTEN FALL AUFRUFEN' : 'ZUR URTEILSVERKÜNDUNG';
-    setMood(null);
+    setMood('verdict');
     setMode('summary'); renderHud();
     animate(document.querySelector('.summary-card'));
   }
@@ -289,7 +329,7 @@
     });
     var tk = $('takeaways'); tk.innerHTML = '';
     D.takeaways.forEach(function (x) { var li = document.createElement('li'); li.textContent = x; tk.appendChild(li); });
-    resetPlates(); setMood(null);
+    resetPlates(); setMood('verdict');
     setMode('final'); renderHud();
     animate(document.querySelector('.verdict-paper'));
   }
@@ -301,6 +341,7 @@
       case 'opening':
         if (st.line + 1 < D.opening.length) showOpening(st.line + 1); else showIntro(0, 0);
         break;
+      case 'cinema': showIntro(st.c, 0, { noCinema: true }); break;
       case 'intro':
         if (st.line + 1 < curCase().intro.length) showIntro(st.c, st.line + 1); else showQuestion(st.c, 0);
         break;
@@ -369,10 +410,28 @@
 
   // ---------- Moderator ----------
   var resetArmed = null;
+  var SERVER = /^https?:$/.test(location.protocol);
   function toggleMod(force) {
-    var open = typeof force === 'boolean' ? force : !stage.classList.contains('mod-open');
-    stage.classList.toggle('mod-open', open);
+    var open = typeof force === 'boolean' ? force : !document.body.classList.contains('admin-open');
+    if (open && SERVER && !AUTOTEST) { // nur angemeldete Admins: Sitzung serverseitig prüfen
+      fetch('/api/admin-status', { cache: 'no-store' }).then(function (r) { return r.json(); })
+        .then(function (j) { if (!j.admin) location.href = '/login.html'; }).catch(function () {});
+    }
+    document.body.classList.toggle('admin-open', open);
+    $('admin-panel').setAttribute('aria-hidden', open ? 'false' : 'true');
+    $('admin-toggle').setAttribute('aria-expanded', open ? 'true' : 'false');
+    fit();
     disarmReset();
+  }
+  function setPresentation(on) {
+    document.documentElement.classList.toggle('presentation', on);
+    $('ap-present').textContent = on ? '✕ Präsentationsmodus beenden' : '📽 Präsentationsmodus';
+    try { localStorage.setItem('5bhel-presentation', on ? '1' : '0'); } catch (e) {}
+    if (on) { toggleMod(false); if (!document.fullscreenElement) toggleFullscreen(); }
+  }
+  function setCinema(on) {
+    cinemaEnabled = on;
+    $('ap-cinema').textContent = '🎬 Fall-Intros: ' + (on ? 'AN' : 'AUS');
   }
   function disarmReset() {
     if (resetArmed) clearTimeout(resetArmed);
@@ -387,9 +446,12 @@
       resetArmed = setTimeout(disarmReset, 4000);
       return;
     }
-    disarmReset(); toggleMod(false); showTitle();
+    disarmReset(); toggleMod(false);
+    if (window.__live && window.__live.resetRoom) window.__live.resetRoom();
+    showTitle();
   }
   function onModNext() {
+    if (window.__live && window.__live.handleNext && window.__live.handleNext()) return;
     if (st.scene === 'title') { showOpening(0); return; }
     finishTyping(); next();
   }
@@ -411,8 +473,11 @@
   $('btn-restart').addEventListener('click', showTitle);
   $('btn-fs-hud').addEventListener('click', toggleFullscreen);
   $('btn-fs-title').addEventListener('click', toggleFullscreen);
-  $('mod-toggle').addEventListener('click', function () { toggleMod(); });
+  $('admin-toggle').addEventListener('click', function () { toggleMod(); });
+  $('admin-backdrop').addEventListener('click', function () { toggleMod(false); });
   $('mod-close').addEventListener('click', function () { toggleMod(false); });
+  $('ap-present').addEventListener('click', function () { setPresentation(!document.documentElement.classList.contains('presentation')); });
+  $('ap-cinema').addEventListener('click', function () { setCinema(!cinemaEnabled); });
   $('mod-next').addEventListener('click', onModNext);
   el.modTimer.addEventListener('click', function () { setTimerEnabled(!timerEnabled); });
   $('mod-fs').addEventListener('click', toggleFullscreen);
@@ -421,11 +486,13 @@
     b.addEventListener('click', function () { onJump(b.getAttribute('data-jump')); });
   });
   document.addEventListener('keydown', function (e) {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT')) return;
     if (e.key === 'm' || e.key === 'M') { toggleMod(); return; }
     if (e.key === 'Escape') { toggleMod(false); return; }
     if (e.key === 'Enter' || e.key === 'ArrowRight' || e.key === ' ') {
       if (e.target && e.target.tagName === 'BUTTON' && e.key !== 'ArrowRight') return; // Button-Fokus: Browser löst Klick aus
-      if (st.scene === 'opening' || st.scene === 'intro' || st.scene === 'explain') { e.preventDefault(); onNext(); }
+      if (st.scene === 'cinema') { e.preventDefault(); next(); }
+      else if (st.scene === 'opening' || st.scene === 'intro' || st.scene === 'explain') { e.preventDefault(); onNext(); }
       else if (st.scene === 'summary') { e.preventDefault(); next(); }
     }
   });
@@ -433,12 +500,15 @@
   // ---------- Start ----------
   showTitle();
   fit();
+  try { if (localStorage.getItem('5bhel-presentation') === '1') document.documentElement.classList.add('presentation'), $('ap-present').textContent = '✕ Präsentationsmodus beenden'; } catch (e) {}
+  if (INSTANT) setCinema(false);
 
-  // Test-Schnittstelle (nur für automatisierte Prüfungen)
+  // Schnittstelle für live-host.js und automatisierte Prüfungen
   window.__game = {
     state: function () { return st; }, data: D, tierFor: tierFor, timer: timer,
     showOpening: showOpening, showIntro: showIntro, showQuestion: showQuestion, answer: answer,
-    showSummary: showSummary, showFinal: showFinal, setTimerEnabled: setTimerEnabled, toggleMod: toggleMod
+    showSummary: showSummary, showFinal: showFinal, setTimerEnabled: setTimerEnabled, toggleMod: toggleMod,
+    applyDecision: applyDecision, restore: restore, setPresentation: setPresentation, setCinema: setCinema, next: next
   };
 
   // Screenshot-Voreinstellungen: index.html?shot=question&c=1&q=2
