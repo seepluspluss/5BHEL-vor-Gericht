@@ -1,0 +1,28 @@
+5BHEL VOR GERICHT – LIVE ABSTIMMUNG
+
+Voraussetzung: Node.js (Version 18 oder neuer) auf dem Präsentations-Laptop.
+
+1. Laptop und alle Handys müssen im selben WLAN sein.
+2. Im Projektordner ein Terminal öffnen und ausführen:
+   node server.js
+3. Auf dem Laptop im Browser öffnen:
+   http://localhost:3000
+4. Rechts oben auf „Raum erstellen“ klicken.
+5. Die Klasse öffnet auf den Handys:
+   http://LAPTOP-IP:3000/abstimmen.html
+   (Die lokale IP-Adresse des Laptops mit ipconfig unter Windows ermitteln.)
+6. Alle geben Raumcode und Namen ein.
+7. Bei jeder Frage auf dem Beamer abstimmen lassen und dann
+   „Abstimmung beenden & Antwort übernehmen“ klicken.
+
+WICHTIG:
+- Auf den Handys NICHT localhost verwenden; das würde auf das jeweilige Handy zeigen.
+- Windows-Firewall muss eingehende Verbindungen zu Port 3000 zulassen.
+- Manche Schul-WLANs isolieren Geräte; dann funktioniert diese LAN-Variante nicht.
+- Eine öffentlich erreichbare Internet-Webseite benötigt Hosting für den Node-Server.
+- Das ist eine lokale Unterrichtsversion, keine gehärtete öffentliche Plattform.
+- Name und Raumcode sind keine sichere Identitätsprüfung.
+- Eine Stimme pro beigetretenem Gerät/Token; mehrfaches Beitreten kann zusätzliche Stimmen erzeugen.
+- Bei Gleichstand gewinnt die erste der gleichauf liegenden Antworten (A vor B vor C).
+- Die Raumdaten liegen nur im Arbeitsspeicher und gehen beim Server-Neustart verloren.
+- Die bisherige Offline-Version über index.html funktioniert weiterhin ohne Abstimmung.

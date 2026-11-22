@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5BHEL vor Gericht</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="stage" class="mode-title">
+
+  <!-- ===== Gerichtssaal (Hintergrund) ===== -->
+  <svg id="room" viewBox="0 0 1920 1080" aria-hidden="true">
+    <defs>
+      <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#140b06"/>
+        <stop offset=".45" stop-color="#33200f"/>
+        <stop offset="1" stop-color="#1a0f07"/>
+      </linearGradient>
+      <linearGradient id="gPanel" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#4a2c16"/>
+        <stop offset=".5" stop-color="#5a3519"/>
+        <stop offset="1" stop-color="#432713"/>
+      </linearGradient>
+      <linearGradient id="gWood" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#7a4a26"/>
+        <stop offset="1" stop-color="#3d2311"/>
+      </linearGradient>
+      <linearGradient id="gLedge" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#b07a45"/>
+        <stop offset="1" stop-color="#6e4422"/>
+      </linearGradient>
+      <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#22140a"/>
+        <stop offset="1" stop-color="#0b0604"/>
+      </linearGradient>
+      <radialGradient id="gLamp" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="#ffd9a0" stop-opacity=".55"/>
+        <stop offset=".4" stop-color="#ffb35c" stop-opacity=".18"/>
+        <stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="gSpot" cx=".5" cy=".45" r=".5">
+        <stop offset="0" stop-color="#ffcf8a" stop-opacity=".34"/>
+        <stop offset=".6" stop-color="#ffb060" stop-opacity=".08"/>
+        <stop offset="1" stop-color="#ffb060" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="gVignette" cx=".5" cy=".42" r=".75">
+        <stop offset=".55" stop-color="#000" stop-opacity="0"/>
+        <stop offset="1" stop-color="#000" stop-opacity=".65"/>
+      </radialGradient>
+      <linearGradient id="gLeather" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#5a1e1e"/>
+        <stop offset="1" stop-color="#2a0d0d"/>
+      </linearGradient>
+      <symbol id="panel" viewBox="0 0 170 400">
+        <rect x="0" y="0" width="170" height="400" fill="url(#gPanel)"/>
+        <rect x="14" y="16" width="142" height="170" fill="none" stroke="#2a170a" stroke-width="5"/>
+        <rect x="18" y="20" width="134" height="162" fill="none" stroke="#7a4b25" stroke-opacity=".35" stroke-width="2"/>
+        <rect x="14" y="208" width="142" height="176" fill="none" stroke="#2a170a" stroke-width="5"/>
+        <rect x="18" y="212" width="134" height="168" fill="none" stroke="#7a4b25" stroke-opacity=".35" stroke-width="2"/>
+      </symbol>
+      <symbol id="silhouette" viewBox="0 0 160 150">
+        <path d="M10 150 C12 112 38 96 80 96 C122 96 148 112 150 150 Z" fill="#120a05"/>
+        <ellipse cx="80" cy="58" rx="34" ry="40" fill="#120a05"/>
+        <path d="M46 58 C46 24 62 14 80 14 C98 14 114 24 114 58" fill="none" stroke="#c98c4c" stroke-opacity=".35" stroke-width="3"/>
+      </symbol>
+    </defs>
+
+    <rect width="1920" height="1080" fill="url(#gWall)"/>
+    <!-- Wandvertäfelung -->
+    <rect x="0" y="86" width="1920" height="14" fill="#5d3a1c"/>
+    <rect x="0" y="100" width="1920" height="4" fill="#1a0e06"/>
+    <g>
+      <use href="#panel" x="25" y="110" width="170" height="400"/>
+      <use href="#panel" x="215" y="110" width="170" height="400"/>
+      <use href="#panel" x="405" y="110" width="170" height="400"/>
+      <use href="#panel" x="595" y="110" width="170" height="400"/>
+      <use href="#panel" x="785" y="110" width="170" height="400"/>
+      <use href="#panel" x="975" y="110" width="170" height="400"/>
+      <use href="#panel" x="1165" y="110" width="170" height="400"/>
+      <use href="#panel" x="1355" y="110" width="170" height="400"/>
+      <use href="#panel" x="1545" y="110" width="170" height="400"/>
+      <use href="#panel" x="1735" y="110" width="170" height="400"/>
+    </g>
+    <rect x="0" y="510" width="1920" height="570" fill="url(#gFloor)"/>
+    <rect x="0" y="506" width="1920" height="8" fill="#5d3a1c"/>
+
+    <!-- Licht -->
+    <ellipse cx="960" cy="300" rx="760" ry="430" fill="url(#gSpot)"/>
+    <ellipse cx="300" cy="210" rx="260" ry="260" fill="url(#gLamp)"/>
+    <ellipse cx="1620" cy="210" rx="260" ry="260" fill="url(#gLamp)"/>
+    <!-- Wandleuchten -->
+    <g fill="#c99a52">
+      <rect x="292" y="196" width="16" height="44" rx="4"/>
+      <path d="M272 196 L328 196 L318 168 L282 168 Z" fill="#f5d9a0"/>
+      <rect x="1612" y="196" width="16" height="44" rx="4"/>
+      <path d="M1592 196 L1648 196 L1638 168 L1602 168 Z" fill="#f5d9a0"/>
+    </g>
+
+    <!-- Emblem: Waage -->
+    <g id="emblem" transform="translate(960 128)" fill="none" stroke="#d4a64a" stroke-width="3.2" stroke-linecap="round">
+      <circle r="40" stroke-opacity=".55"/>
+      <line x1="0" y1="-24" x2="0" y2="24"/>
+      <line x1="-22" y1="-14" x2="22" y2="-14"/>
+      <path d="M-22 -14 L-30 6 L-14 6 Z"/>
+      <path d="M22 -14 L14 6 L30 6 Z"/>
+      <line x1="-10" y1="24" x2="10" y2="24"/>
+    </g>
+
+    <!-- Richtersessel -->
+    <rect x="868" y="168" width="184" height="190" rx="34" fill="url(#gLeather)"/>
+    <rect x="884" y="184" width="152" height="160" rx="24" fill="none" stroke="#c99a52" stroke-opacity=".3" stroke-width="2"/>
+
+    <!-- Richter Prof. Lehrner (stilisiert) -->
+    <g id="judge">
+      <path d="M836 360 C842 306 880 290 922 286 L998 286 C1040 290 1078 306 1084 360 Z" fill="#111014"/>
+      <path d="M922 286 L960 352 L998 286" fill="none" stroke="#6b3f92" stroke-width="13" stroke-linejoin="round"/>
+      <path d="M944 288 L976 288 L960 320 Z" fill="#f1efe9"/>
+      <rect x="945" y="262" width="30" height="30" fill="#d7ab86"/>
+      <ellipse cx="960" cy="228" rx="44" ry="52" fill="#e9c6a1"/>
+      <path d="M917 222 C914 250 922 266 932 272 L930 232 Z" fill="#a9a6a2"/>
+      <path d="M1003 222 C1006 250 998 266 988 272 L990 232 Z" fill="#a9a6a2"/>
+      <path d="M910 200 C916 166 1004 166 1010 200 L1014 208 C988 196 932 196 906 208 Z" fill="#0f0d10"/>
+      <g id="brows" stroke="#6d6a66" stroke-width="3.5" stroke-linecap="round">
+        <line class="brow-l" x1="932" y1="212" x2="952" y2="214"/>
+        <line class="brow-r" x1="968" y1="214" x2="988" y2="212"/>
+      </g>
+      <g fill="none" stroke="#2a2420" stroke-width="3">
+        <circle cx="943" cy="230" r="13" fill="#fff" fill-opacity=".14"/>
+        <circle cx="977" cy="230" r="13" fill="#fff" fill-opacity=".14"/>
+        <line x1="956" y1="229" x2="964" y2="229"/>
+      </g>
+      <g id="eyes" fill="#2a1a10">
+        <circle cx="943" cy="231" r="3.4"/>
+        <circle cx="977" cy="231" r="3.4"/>
+      </g>
+      <ellipse id="mouth" cx="960" cy="259" rx="11" ry="2.6" fill="#8a4a3a"/>
+    </g>
+
+    <!-- Richterbank -->
+    <rect x="532" y="330" width="856" height="28" rx="4" fill="url(#gLedge)"/>
+    <rect x="552" y="358" width="816" height="170" fill="url(#gWood)"/>
+    <g fill="none" stroke="#2a170a" stroke-width="4">
+      <rect x="576" y="380" width="230" height="124"/>
+      <rect x="1114" y="380" width="230" height="124"/>
+    </g>
+    <g fill="none" stroke="#c99a52" stroke-opacity=".25" stroke-width="2">
+      <rect x="582" y="386" width="218" height="112"/>
+      <rect x="1120" y="386" width="218" height="112"/>
+    </g>
+    <!-- Akten und Gesetzbuch auf der Richterbank -->
+    <rect x="690" y="314" width="120" height="16" rx="2" fill="#e8dcc0"/>
+    <rect x="696" y="302" width="112" height="13" rx="2" fill="#d9c9a5"/>
+    <rect x="1108" y="300" width="104" height="30" rx="3" fill="#6b1e1e"/>
+    <rect x="1108" y="300" width="10" height="30" fill="#4a1414"/>
+    <text x="1166" y="322" text-anchor="middle" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#e2b75e">ZPO</text>
+
+    <!-- Tisch links: Kanzlei 5BHEL -->
+    <use href="#silhouette" x="190" y="300" width="160" height="150"/>
+    <rect x="44" y="420" width="470" height="20" rx="3" fill="url(#gLedge)"/>
+    <rect x="58" y="440" width="442" height="90" fill="url(#gWood)"/>
+    <!-- Tisch rechts: Gegenseite -->
+    <use href="#silhouette" x="1570" y="300" width="160" height="150"/>
+    <rect x="1406" y="420" width="470" height="20" rx="3" fill="url(#gLedge)"/>
+    <rect x="1420" y="440" width="442" height="90" fill="url(#gWood)"/>
+
+    <rect width="1920" height="1080" fill="url(#gVignette)"/>
+  </svg>
+
+  <!-- Namensschilder -->
+  <div id="plate-judge" class="plate">
+    <span class="plate-name">PROF. LEHRNER</span>
+    <span class="plate-sub">Richter</span>
+  </div>
+  <div id="plate-left" class="plate plate-desk">
+    <span class="plate-name">5BHEL</span>
+    <span class="plate-sub" id="plate-left-sub">Kanzlei</span>
+  </div>
+  <div id="plate-right" class="plate plate-desk plate-dim">
+    <span class="plate-name">GEGENSEITE</span>
+    <span class="plate-sub" id="plate-right-sub">–</span>
+  </div>
+
+  <!-- Fall-Banner -->
+  <div id="case-banner">
+    <div id="case-banner-kicker">FALL 1</div>
+    <div id="case-banner-title">Der Verkehrsunfall</div>
+  </div>
+
+  <!-- HUD -->
+  <header id="hud">
+    <div id="hud-brand">5BHEL <span>VOR GERICHT</span></div>
+    <div id="hud-case">
+      <div id="hud-case-label">Eröffnung</div>
+      <div id="hud-dots"></div>
+    </div>
+    <div id="hud-right">
+      <div id="hud-score"><span class="hud-score-label">PUNKTE</span> <span id="hud-score-val">0</span><span id="hud-score-gain"></span></div>
+      <button id="btn-fs-hud" class="btn-ghost" type="button" title="Vollbild (F11)">&#x26F6; Vollbild</button>
+    </div>
+  </header>
+
+  <!-- Aktuelle Verhandlungsphase und Wortmeldung der Beteiligten -->
+  <div id="hearing-cue" aria-live="polite">
+    <span id="hearing-phase">VERHANDLUNG</span>
+    <span id="hearing-voice">Prof. Lehrner</span>
+    <span id="hearing-line">Die Verhandlung wird eröffnet.</span>
+  </div>
+
+  <!-- Dialog des Richters -->
+  <section id="dialog">
+    <div id="dialog-speaker">PROF. LEHRNER <span>· Richter</span></div>
+    <div id="dialog-body" class="fit">
+      <p id="say-text"></p>
+      <p id="say-sub"></p>
+    </div>
+    <div id="verdict-stamp"></div>
+    <button id="btn-next" class="btn-primary" type="button">Weiter &#x25B8;</button>
+    <button id="btn-timer" class="btn-timer" type="button">
+      <span id="timer-label">&#x23F1; Beratung 30 s</span>
+    </button>
+  </section>
+
+  <!-- Unterer Bereich: Spielregeln / Akt / Antworten / Begründung -->
+  <section id="lower">
+    <div id="lower-rules" class="card fit">
+      <div class="card-kicker">So läuft die Verhandlung</div>
+      <ul id="rules-list"></ul>
+    </div>
+
+    <div id="lower-file" class="card fit">
+      <div class="card-kicker">Akt <span id="file-diff" class="diff"></span></div>
+      <div class="file-grid">
+        <div><span class="file-label">Klagende Partei</span><span id="file-plaintiff" class="file-val"></span></div>
+        <div><span class="file-label">Beklagte Partei</span><span id="file-defendant" class="file-val"></span></div>
+        <div><span class="file-label">Streitgegenstand</span><span id="file-subject" class="file-val"></span></div>
+        <div><span class="file-label">Streitwert</span><span id="file-amount" class="file-val"></span></div>
+      </div>
+      <div id="file-client" class="file-client"></div>
+    </div>
+
+    <div id="lower-answers">
+      <button class="answer fit" type="button" data-i="0"><span class="answer-letter">A</span><span class="answer-text"></span></button>
+      <button class="answer fit" type="button" data-i="1"><span class="answer-letter">B</span><span class="answer-text"></span></button>
+      <button class="answer fit" type="button" data-i="2"><span class="answer-letter">C</span><span class="answer-text"></span></button>
+    </div>
+
+    <div id="lower-explain" class="card fit">
+      <div class="card-kicker">Begründung</div>
+      <p id="explain-text"></p>
+    </div>
+  </section>
+
+  <!-- Startbildschirm -->
+  <div id="screen-title" class="screen">
+    <div class="title-inner">
+      <div class="title-kicker">Eine interaktive Gerichtsverhandlung</div>
+      <h1 class="title-main">5BHEL <span>VOR GERICHT</span></h1>
+      <div class="title-rule"></div>
+      <p class="title-sub">Drei Fälle. Zwölf Entscheidungen. Ein Urteil.</p>
+      <button id="btn-start" class="btn-primary btn-xl" type="button">VERHANDLUNG ERÖFFNEN</button>
+      <button id="btn-fs-title" class="btn-ghost" type="button">&#x26F6; Vollbild (F11)</button>
+      <p class="title-foot">Didaktisch vereinfachte Beispielfälle zum österreichischen Zivilverfahrensrecht</p>
+    </div>
+  </div>
+
+  <!-- Fallauswertung -->
+  <div id="screen-summary" class="screen screen-dim">
+    <div class="summary-card">
+      <div class="card-kicker" id="sum-kicker">FALL 1 ABGESCHLOSSEN</div>
+      <h2 id="sum-title">Der Verkehrsunfall</h2>
+      <div id="sum-points" class="sum-points">0 / 400</div>
+      <ol id="sum-list" class="sum-list"></ol>
+      <p id="sum-outcome" class="sum-outcome fit"></p>
+      <button id="btn-case-next" class="btn-primary btn-xl" type="button">NÄCHSTEN FALL AUFRUFEN</button>
+    </div>
+  </div>
+
+  <!-- Urteil -->
+  <div id="screen-final" class="screen screen-dim">
+    <div class="verdict-paper">
+      <div class="verdict-rep">IM NAMEN DER REPUBLIK</div>
+      <div class="verdict-court">Urteil über die juristische Leistung der Kanzlei 5BHEL</div>
+      <div class="verdict-score"><span id="final-score">0</span><small> / 1.200 Punkte</small></div>
+      <div class="verdict-cases" id="final-cases"></div>
+      <div class="verdict-label">Spruch</div>
+      <h2 id="final-title" class="verdict-title"></h2>
+      <p id="final-text" class="verdict-text fit"></p>
+      <div class="verdict-close">Die Verhandlung ist geschlossen. &nbsp;— Prof. Lehrner, Richter</div>
+      <button id="btn-restart" class="btn-primary btn-xl" type="button">ERNEUT SPIELEN</button>
+    </div>
+    <div class="takeaway-card">
+      <div class="card-kicker">Merksätze</div>
+      <ol id="takeaways" class="fit"></ol>
+    </div>
+  </div>
+
+  <!-- Moderator-Modus -->
+  <button id="mod-toggle" type="button" title="Moderator-Modus (Taste M)">&#x2699;</button>
+  <div id="mod-panel" role="dialog" aria-label="Moderator">
+    <div class="mod-head">Moderator <button id="mod-close" type="button" title="Schließen">&#x2715;</button></div>
+    <button id="mod-next" type="button">&#x25B8; Nächste Szene</button>
+    <button id="mod-timer" type="button">&#x23F1; Timer: AN</button>
+    <div class="mod-row">
+      <button type="button" data-jump="opening">Eröffn.</button>
+      <button type="button" data-jump="0">Fall 1</button>
+      <button type="button" data-jump="1">Fall 2</button>
+      <button type="button" data-jump="2">Fall 3</button>
+      <button type="button" data-jump="final">Urteil</button>
+    </div>
+    <button id="mod-fs" type="button">&#x26F6; Vollbild ein/aus</button>
+    <button id="mod-reset" type="button" class="mod-danger">&#x21BA; Spiel zurücksetzen</button>
+    <div class="mod-hint">M: Moderator · Enter/&#x2192;: Weiter · F11: Vollbild</div>
+  </div>
+</div>
+
+<script src="js/cases.js"></script>
+<script src="js/game.js"></script>
+<script src="js/live-host.js"></script>
+</body>
+</html>

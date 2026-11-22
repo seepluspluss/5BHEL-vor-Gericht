@@ -1,0 +1,11 @@
+VERSION: VERHANDLUNG MIT MEHR DRAMATURGIE
+
+Neu:
+- Alle zwölf Fragen haben jetzt eine eigene Verhandlungsphase.
+- Vor der Frage spricht eine beteiligte Person (Mandant, Gegenseite oder Gerichtsdiener).
+- Nach der Entscheidung reagiert Prof. Lehrner konkret auf die Situation.
+- Die Wortmeldungen sind als gut lesbares Band oberhalb der Dialogbox gestaltet.
+- Kein zusätzlicher Klick nötig, der Ablauf bleibt bei drei Fällen und zwölf Entscheidungen.
+
+Start: index.html doppelklicken. EXE-Bau unter Windows: tools\\build-exe.cmd.
+Hinweis: Ein erfolgreicher Windows-EXE-Bau ist in dieser Umgebung nicht nachgewiesen.

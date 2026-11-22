@@ -1,0 +1,62 @@
+[
+  {
+    "viewport": "1920x1080",
+    "checks": 4538,
+    "failures": [],
+    "runs": [
+      "alle richtig: 1.200 – Prozessführung mit Auszeichnung | Fälle 400 / 400 Punkte, 400 / 400 Punkte, 400 / 400 Punkte",
+      "alle falsch: 0 – Kanzlei unter Beobachtung | Fälle 0 / 400 Punkte, 0 / 400 Punkte, 0 / 400 Punkte",
+      "abwechselnd: 600 – Bedingt prozessreif | Fälle 200 / 400 Punkte, 200 / 400 Punkte, 200 / 400 Punkte",
+      "nur Fall 1 richtig: 400 – Bedingt prozessreif | Fälle 400 / 400 Punkte, 0 / 400 Punkte, 0 / 400 Punkte",
+      "fast perfekt: 1.100 – Ausgezeichnete Kanzlei | Fälle 400 / 400 Punkte, 400 / 400 Punkte, 300 / 400 Punkte"
+    ],
+    "notes": [],
+    "result": "PASS",
+    "size": "1920x1080"
+  },
+  {
+    "viewport": "1366x768",
+    "checks": 4538,
+    "failures": [],
+    "runs": [
+      "alle richtig: 1.200 – Prozessführung mit Auszeichnung | Fälle 400 / 400 Punkte, 400 / 400 Punkte, 400 / 400 Punkte",
+      "alle falsch: 0 – Kanzlei unter Beobachtung | Fälle 0 / 400 Punkte, 0 / 400 Punkte, 0 / 400 Punkte",
+      "abwechselnd: 600 – Bedingt prozessreif | Fälle 200 / 400 Punkte, 200 / 400 Punkte, 200 / 400 Punkte",
+      "nur Fall 1 richtig: 400 – Bedingt prozessreif | Fälle 400 / 400 Punkte, 0 / 400 Punkte, 0 / 400 Punkte",
+      "fast perfekt: 1.100 – Ausgezeichnete Kanzlei | Fälle 400 / 400 Punkte, 400 / 400 Punkte, 300 / 400 Punkte"
+    ],
+    "notes": [],
+    "result": "PASS",
+    "size": "1366x768"
+  },
+  {
+    "viewport": "1280x720",
+    "checks": 4538,
+    "failures": [],
+    "runs": [
+      "alle richtig: 1.200 – Prozessführung mit Auszeichnung | Fälle 400 / 400 Punkte, 400 / 400 Punkte, 400 / 400 Punkte",
+      "alle falsch: 0 – Kanzlei unter Beobachtung | Fälle 0 / 400 Punkte, 0 / 400 Punkte, 0 / 400 Punkte",
+      "abwechselnd: 600 – Bedingt prozessreif | Fälle 200 / 400 Punkte, 200 / 400 Punkte, 200 / 400 Punkte",
+      "nur Fall 1 richtig: 400 – Bedingt prozessreif | Fälle 400 / 400 Punkte, 0 / 400 Punkte, 0 / 400 Punkte",
+      "fast perfekt: 1.100 – Ausgezeichnete Kanzlei | Fälle 400 / 400 Punkte, 400 / 400 Punkte, 300 / 400 Punkte"
+    ],
+    "notes": [],
+    "result": "PASS",
+    "size": "1280x720"
+  },
+  {
+    "viewport": "1024x768",
+    "checks": 4538,
+    "failures": [],
+    "runs": [
+      "alle richtig: 1.200 – Prozessführung mit Auszeichnung | Fälle 400 / 400 Punkte, 400 / 400 Punkte, 400 / 400 Punkte",
+      "alle falsch: 0 – Kanzlei unter Beobachtung | Fälle 0 / 400 Punkte, 0 / 400 Punkte, 0 / 400 Punkte",
+      "abwechselnd: 600 – Bedingt prozessreif | Fälle 200 / 400 Punkte, 200 / 400 Punkte, 200 / 400 Punkte",
+      "nur Fall 1 richtig: 400 – Bedingt prozessreif | Fälle 400 / 400 Punkte, 0 / 400 Punkte, 0 / 400 Punkte",
+      "fast perfekt: 1.100 – Ausgezeichnete Kanzlei | Fälle 400 / 400 Punkte, 400 / 400 Punkte, 300 / 400 Punkte"
+    ],
+    "notes": [],
+    "result": "PASS",
+    "size": "1024x768"
+  }
+]
