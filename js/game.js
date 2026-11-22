@@ -224,6 +224,7 @@
     if (st.scene !== 'question') return;
     finishTyping();
     var q = curQ(), ok = i === q.correct;
+    window.dispatchEvent(new CustomEvent('game-answer', { detail: { i: i } }));
     st.results[st.c][st.q] = { chosen: i, ok: ok, skipped: false };
     if (ok) { st.score += PER_Q; popGain('+' + PER_Q); }
     showExplain();
@@ -275,6 +276,7 @@
       el.stamp.textContent = '✗ ' + (r.live ? 'MEHRHEIT ' : 'FALSCH (') + LETTERS[r.chosen] + (r.live ? '' : ')') + ' · 0'; el.stamp.className = 'bad'; setMood('stern');
     }
     setHearing(st.c, st.q, r.skipped ? 'wrong' : (r.ok ? 'right' : 'wrong'));
+    window.dispatchEvent(new CustomEvent('game-judged', { detail: { ok: !!r.ok, skipped: !!r.skipped, live: !!r.live } }));
     el.explain.textContent = q.explanation;
     setMode('explain'); renderHud();
     animate($('lower-explain'));
@@ -318,6 +320,7 @@
     stopTimer(); stopTyping(); stage.classList.remove('speaking', 'show-banner');
     st.scene = 'final';
     var t = tierFor(st.score);
+    window.dispatchEvent(new CustomEvent('game-final', { detail: { score: st.score, tier: t.title } }));
     $('final-score').textContent = fmt(st.score);
     $('final-title').textContent = t.title;
     $('final-text').textContent = t.text;
@@ -370,6 +373,7 @@
   }
   function renderTimer() {
     var r = timer.remaining;
+    if (timer.running) window.dispatchEvent(new CustomEvent('vote-countdown', { detail: { sec: r } }));
     el.timerLabel.textContent = r > 0 ? '0:' + (r < 10 ? '0' : '') + r : 'Zeit! Bitte wählen';
     el.btnTimer.classList.toggle('urgent', r > 0 && r <= 10);
     el.btnTimer.classList.toggle('done', r <= 0);

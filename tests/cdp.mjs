@@ -19,7 +19,8 @@ export async function launch() {
   const ws = new WebSocket(wsUrl);
   await new Promise((res, rej) => { ws.onopen = res; ws.onerror = rej; });
   let id = 0; const pending = new Map();
-  ws.onmessage = (m) => { const d = JSON.parse(m.data); if (d.id && pending.has(d.id)) { const p = pending.get(d.id); pending.delete(d.id); d.error ? p.rej(Error(d.error.message)) : p.res(d.result); } };
+  const listeners = new Map();
+  ws.onmessage = (m) => { const d = JSON.parse(m.data); if (d.method && d.sessionId && listeners.has(d.sessionId)) listeners.get(d.sessionId)(d); if (d.id && pending.has(d.id)) { const p = pending.get(d.id); pending.delete(d.id); d.error ? p.rej(Error(d.error.message)) : p.res(d.result); } };
   const send = (method, params = {}, sessionId) => new Promise((res, rej) => { const i = ++id; pending.set(i, { res, rej }); ws.send(JSON.stringify({ id: i, method, params, sessionId })); });
 
   async function newPage({ width = 1920, height = 1080, mobile = false, scale = 1 } = {}) {
@@ -27,10 +28,20 @@ export async function launch() {
     const { targetId } = await send('Target.createTarget', { url: 'about:blank', browserContextId });
     const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
     const s = (m, p) => send(m, p, sessionId);
-    await s('Page.enable'); await s('Runtime.enable');
+    const errors = [];
+    listeners.set(sessionId, (d) => {
+      if (d.method === 'Runtime.exceptionThrown') errors.push('JS: ' + ((d.params.exceptionDetails.exception || {}).description || d.params.exceptionDetails.text));
+      if (d.method === 'Log.entryAdded' && d.params.entry.level === 'error') errors.push('LOG: ' + d.params.entry.text + ' ' + (d.params.entry.url || ''));
+      if (d.method === 'Runtime.consoleAPICalled' && d.params.type === 'error') errors.push('CONSOLE: ' + d.params.args.map(a => a.value || a.description).join(' '));
+    });
+    await s('Page.enable'); await s('Runtime.enable'); await s('Log.enable');
     await s('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: scale, mobile });
     if (mobile) await s('Emulation.setTouchEmulationEnabled', { enabled: true });
     const page = {
+      errors,
+      async initScript(source) { await s('Page.addScriptToEvaluateOnNewDocument', { source }); },
+      async mouse(x, y) { for (const type of ['mousePressed', 'mouseReleased']) await s('Input.dispatchMouseEvent', { type, x, y, button: 'left', clickCount: 1 }); await sleep(80); },
+      async mouseOn(sel) { const r = await page.eval(`(()=>{const e=document.querySelector(${JSON.stringify(sel)});const b=e.getBoundingClientRect();return [b.left+b.width/2,b.top+b.height/2]})()`); await page.mouse(r[0], r[1]); },
       async goto(url) { await s('Page.navigate', { url }); await page.waitFor('document.readyState === "complete"', 15000); await sleep(150); },
       async eval(expr) {
         const r = await s('Runtime.evaluate', { expression: expr, awaitPromise: true, returnByValue: true });

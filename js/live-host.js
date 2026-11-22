@@ -15,7 +15,7 @@
   var S = null;             // letzter Serverzustand (Admin-Sicht)
   var pollHandle = null, pollBusy = false, deadlineLocal = 0;
   var presentedKey = '', resultShownAt = 0, autoHandle = null, continuing = false;
-  var lastScene = '';
+  var lastScene = '', lastVoted = { id: '', n: 0 };
 
   if (!SERVER) document.documentElement.classList.add('offline');
 
@@ -126,6 +126,8 @@
     stage.classList.toggle('live-voting', !!voting);
     stage.classList.toggle('live-mode', true);
     if (voting) {
+      if (lastVoted.id === v.id && v.voted > lastVoted.n) window.dispatchEvent(new CustomEvent('vote-received', { detail: { voted: v.voted } }));
+      lastVoted = { id: v.id, n: v.voted };
       $('lv-label').textContent = v.round > 1 ? 'STICHWAHL · nur ' + v.options.map(function (i) { return LETTERS[i]; }).join(' oder ') : 'JETZT AM HANDY ABSTIMMEN';
       $('lv-count').textContent = v.voted + ' / ' + Math.max(v.required, v.voted) + ' Stimmen';
       document.querySelectorAll('.answer').forEach(function (b, i) { b.classList.toggle('dimmed', v.options.indexOf(i) < 0); });
@@ -138,6 +140,7 @@
     if (!S || !S.vote || S.vote.phase !== 'voting') return;
     var left = Math.max(0, deadlineLocal - Date.now()), sec = Math.ceil(left / 1000);
     var total = S.vote.duration * 1000;
+    if (String(sec) !== $('lv-sec').textContent) window.dispatchEvent(new CustomEvent('vote-countdown', { detail: { sec: sec } }));
     $('lv-sec').textContent = sec;
     $('lv-ring').style.strokeDashoffset = String(276.5 * (1 - left / total));
     $('live-vote').classList.toggle('urgent', sec <= 10);
@@ -164,8 +167,11 @@
     if (v.phase === 'voting') { if (stage.classList.contains('show-vote-result')) hideResult(); return; } // z. B. Stichwahl oder Neustart
     var k = v.id + (s.decision ? ':' + s.decision.method : ':open');
     if (k === presentedKey) return;
+    var afterTie = presentedKey === v.id + ':open';
     presentedKey = k;
     showResult(s);
+    var d = s.decision;
+    window.dispatchEvent(new CustomEvent('vote-result', { detail: { kind: !d ? v.outcome : d.method === 'skipped' ? 'skipped' : afterTie ? 'decided' : 'decision' } }));
   }
 
   function showResult(s) {

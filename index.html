@@ -433,6 +433,9 @@
 <button id="admin-toggle" type="button" title="Spielleitung öffnen (Taste M)" aria-controls="admin-panel" aria-expanded="false">
   <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7zm7.4-2.5c.04-.33.06-.66.06-1s-.02-.67-.06-1l2.1-1.65a.5.5 0 0 0 .12-.64l-2-3.46a.5.5 0 0 0-.6-.22l-2.48 1a7.3 7.3 0 0 0-1.73-1l-.38-2.65A.5.5 0 0 0 14 2h-4a.5.5 0 0 0-.5.42l-.37 2.65c-.63.26-1.2.6-1.73 1l-2.49-1a.5.5 0 0 0-.6.22l-2 3.46a.5.5 0 0 0 .12.64L4.6 11c-.04.33-.07.66-.07 1s.03.67.07 1l-2.11 1.65a.5.5 0 0 0-.12.64l2 3.46c.13.22.39.3.6.22l2.49-1c.52.4 1.1.74 1.73 1l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.2-.6 1.73-1l2.49 1c.22.08.47 0 .6-.22l2-3.46a.5.5 0 0 0-.12-.64L19.4 13z"/></svg>
 </button>
+<button id="audio-mute" type="button" title="Ton aus/an" aria-pressed="false">
+  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M4 9v6h4l5 5V4L8 9H4z"/><path class="am-on" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="am-off" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M16 9l6 6M22 9l-6 6"/></svg>
+</button>
 <div id="admin-backdrop"></div>
 <aside id="admin-panel" role="dialog" aria-label="Spielleitung" aria-hidden="true">
   <div class="ap-head">
@@ -462,6 +465,17 @@
         <button id="ap-present" type="button" class="ap-btn ap-main">&#x1F4FD; Präsentationsmodus</button>
         <button id="mod-fs" type="button" class="ap-btn">&#x26F6; Vollbild</button>
       </div>
+    </section>
+
+    <section class="ap-sec">
+      <h3>Audio <span id="au-status" class="ap-conn"></span></h3>
+      <div class="ap-row">
+        <button id="au-music" type="button" class="ap-btn">♪ Musik: AN</button>
+        <button id="au-sfx" type="button" class="ap-btn">🔔 Effekte: AN</button>
+      </div>
+      <label class="ap-label ap-range">Musiklautstärke <input id="au-mvol" type="range" min="0" max="100" step="5"></label>
+      <label class="ap-label ap-range">Effektlautstärke <input id="au-svol" type="range" min="0" max="100" step="5"></label>
+      <button id="au-test" type="button" class="ap-btn">▶ Audio testen</button>
     </section>
 
     <section class="ap-sec ap-live-only">
@@ -534,5 +548,6 @@
 <script src="js/game.js"></script>
 <script src="js/cinema.js"></script>
 <script src="js/live-host.js"></script>
+<script src="js/audio.js"></script>
 </body>
 </html>

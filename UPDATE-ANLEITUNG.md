@@ -61,3 +61,18 @@ npm test
 node tests/e2e.mjs --shots
 ```
 `npm test` prüft den Server mit simulierten Schülern; `tests/e2e.mjs` startet ein unsichtbares Edge mit Admin-, drei Handy- und einer Beobachteransicht.
+
+## Musik und Soundeffekte (Version 2.1)
+- Alle Musikstücke und Effekte sind **eigene Kompositionen**, die der Browser live mit der Web Audio API erzeugt
+  (Klavier, Streicher, Bass, Blechbläser, Pauken, Percussion). Es gibt **keine Audiodateien** und keine externen Quellen –
+  dadurch funktioniert der Ton auch offline und auf Render ohne Zusatzaufwand.
+- Ton nur auf dem Beamer-Gerät (Spielleitung). Schülerhandys und Lehrkraft-Übersicht bleiben stumm.
+- Browser erlauben Ton erst nach einem Klick: Nach dem Laden einmal irgendwo klicken (z. B. Zahnrad oder „Raum erstellen“).
+- Spielleitung → **Audio**: Musik an/aus, Effekte an/aus, zwei Lautstärkeregler, „Audio testen“. Einstellungen bleiben gespeichert.
+- Kleines Lautsprecher-Symbol unten rechts: sofort stumm/laut (auch im Präsentationsmodus).
+- Ablauf: Startbildschirm „Courtroom Prelude“ → Verhandlung „Trial Begins“ → Abstimmung „Critical Decision“
+  (wird in den letzten Sekunden dichter, Ticks bei 5–1) → Abstimmungsschluss mit Trommelwirbel und neutralem Akzent
+  („The Verdict“, verrät nichts) → „Justice Prevails“ bzw. „Objection Denied“ → „Final Judgment“ (festlich ab 700 Punkten, sonst ernst).
+- Während die Richterin spricht, wird die Musik automatisch leiser.
+
+Test: `node tests/audio.mjs`

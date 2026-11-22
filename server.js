@@ -333,7 +333,7 @@ function recalcScore(r) { r.score = [...r.decisions.values()].reduce((s, d) => s
 
 // ---------- HTTP ----------
 const PUBLIC_FILES = new Set(['/abstimmen.html', '/login.html', '/beobachten.html', '/css/style.css', '/css/live.css']);
-const ADMIN_FILES = new Set(['/index.html', '/css/admin.css', '/css/theme.css', '/js/cases.js', '/js/game.js', '/js/live-host.js', '/js/cinema.js', '/js/autotest.js']);
+const ADMIN_FILES = new Set(['/index.html', '/css/admin.css', '/css/theme.css', '/js/cases.js', '/js/game.js', '/js/live-host.js', '/js/cinema.js', '/js/audio.js', '/js/autotest.js']);
 
 http.createServer(async (req, res) => {
   let url;
